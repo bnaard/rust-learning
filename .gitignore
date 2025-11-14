@@ -48,9 +48,6 @@ latexmkrc
 build/
 output/
 
-# VS Code settings
-.vscode/
-
 # macOS system files
 .DS_Store
 .AppleDouble
