@@ -6,6 +6,22 @@
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
 \usepackage{minted}
+\usepackage[dvipsnames*,svgnames]{xcolor}
+% \usepackage{fontspec}
+\usepackage{emo}
+
+
+% Comment one or the other to change emoji font
+% \newfontface\emojifont{Noto Color Emoji}[Renderer=Harfbuzz]
+% \newfontface\emojifont{Segoe UI Emoji}[Renderer=Harfbuzz]
+
+
+% Use a modern, Arial-like sans-serif as the document default (Helvetica
+% substitute). This is PDFLaTeX-safe. If you prefer true Arial and are
+% compiling with XeLaTeX/LuaLaTeX, switch to fontspec instead and load
+% the system Arial.
+\usepackage[scaled]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
 
 % --- Page layout -------------------------------------------------------------
 \usepackage[right=2.5mm, left=2.5mm, top=2.5mm, bottom=2.5mm]{geometry}
@@ -13,6 +29,8 @@
 % --- Graphics ----------------------------------------------------------------
 \usepackage{tikz}
 \usepackage{graphicx}
+% Allow embedding SVG logos (requires Inkscape + -shell-escape to compile)
+\usepackage{svg}
 \usepackage[percent]{overpic}
 \graphicspath{{./figures/}{./icons/}{./logos/}}
 \usepackage[export]{adjustbox}
@@ -51,6 +69,9 @@
 \usepackage{amsmath}
 % control list spacing
 \usepackage{enumitem}
+% tcolorbox provides a verbatim-safe side-by-side box (used for subcolumns env)
+\usepackage[most]{tcolorbox}
+  \tcbuselibrary{listings,skins,breakable}
 
 % --- Default options ---------------------------------------------------------
 \setlength\parindent{0pt}
@@ -69,9 +90,9 @@
 
 \newcommand{\sectiontitle}[1]{\paragraph{#1} \ \\} % Custom command for subsection titles
 
-\newcommand{\API}[1]{\tikz[baseline=(X.base)]
+\newcommand{\DOC}[1]{\tikz[baseline=(X.base)]
   \node [fill=black!40, rectangle, inner sep=2pt,rounded corners=1pt] (X)
-        {\href{#1}{\color{white}{\tiny \sffamily \textbf{API}}}};}
+        {\href{#1}{\color{white}{\tiny \sffamily \textbf{DOC}}}};}
 
 \newcommand{\READ}[1]{\tikz[baseline=(X.base)]
   \node [fill=black!40, rectangle, inner sep=2pt,rounded corners=1pt] (X)
@@ -88,10 +109,59 @@
   \tiny \ttfamily #1\\ \arrayrulecolor{white}\hline
 }
 
+% --- Small TikZ helper: bordered filled outer box with dashed inner non-filled boxes in a row
+% Usage: \tikzboxrow{<size>}{<color>}{<n>} where
+%  - <size> is a TeX length (e.g. 20mm, 1.2cm, 50pt) for the outer square side,
+%  - <color> is any color understood by xcolor (e.g. orange!60, blue, red!30),
+%  - <n> is the number of inner dashed, non-filled boxes to place in a row.
+% The inner boxes are automatically scaled to fit with a small padding and gap.
+\newlength{\memlouterboxheight}
+\newlength{\memlouterboxwidth}
+\newlength{\memlinnerboxpad}
+\newlength{\memlinnerboxeswidth}
+\newlength{\memlinnerboxesheight}
+\newlength{\memlinnerboxesgap}
+\newlength{\memlinnerboxwidth}
+\newlength{\memlinnerboxXshift}
+
+\newcommand{\memlboxrow}[4]{%
+  % #1 = width, #2 = height, #3 = color, #4 = n
+  \begingroup
+  \setlength{\memlouterboxwidth}{#1} % outer square size
+  \setlength{\memlouterboxheight}{#2} % outer square size
+  % padding, gap and corner radius as percentages of outer size (reasonable defaults)
+  \setlength{\memlinnerboxpad}{\dimexpr \memlouterboxheight * 20 / 100\relax}% 20%
+  \setlength{\memlinnerboxesgap}{\dimexpr \memlouterboxheight * 10 / 100\relax}% 10%
+  \setlength{\memlinnerboxeswidth}{\dimexpr \memlouterboxwidth - 2\memlinnerboxpad\relax}% inner available width
+  \setlength{\memlinnerboxesheight}{\dimexpr \memlouterboxheight - 2\memlinnerboxpad\relax}% keep square inner area
+  % compute inner box width as a TeX length using PGF math; pass explicit numeric lengths
+  % via "\\the\\<length>" so PGF gets numeric values it can evaluate
+  \pgfmathsetlength{\memlinnerboxwidth}{(\the\memlinnerboxeswidth - ((#4 - 1)*\the\memlinnerboxesgap))/#4}
+    \begin{tikzpicture}[inner sep=+0pt, outer sep=+0pt, baseline={([yshift=-0.6ex]current bounding box.center)}]
+
+        % outer box: filled, slightly rounded, border chosen darker than fill
+        \node[draw=#3!black, fill=#3, rounded corners=2pt, 
+            minimum width=\memlouterboxwidth, minimum height=\memlouterboxheight, inner sep=0pt] (outer) {};
+
+        % place inner dashed, non-filled boxes centered vertically inside outer
+        \foreach \i in {1,...,#4} {
+          % compute horizontal center position of current inner box (as a TeX length)
+          % use "\\the\\<length>" so PGF math sees numeric values with units
+          \pgfmathsetlength{\memlinnerboxXshift}{\the\memlinnerboxpad + ((\i-1)*(\the\memlinnerboxwidth + \the\memlinnerboxesgap) + \the\memlinnerboxwidth/2)}
+
+
+          \node[draw=#3!black, solid, fill=#3!gray, rounded corners=0.5pt, line width=0.5pt,
+                minimum width=\memlinnerboxwidth, minimum height=\memlinnerboxesheight, inner sep=0pt]
+                at ($(outer.west)+ (\memlinnerboxXshift,0)$) {};
+        }
+    \end{tikzpicture}%
+  \endgroup
+}
+
 \newcommand{\palette}[2]{%
   \adjustimage{width=0.7\columnwidth,valign=c}{colors-#1.pdf} &
   \tiny \ttfamily #2\\ \arrayrulecolor{white}\hline
-}
+} 
 
 
 \newcommand{\optional}[1]{\textcolor{gray}{#1}}
@@ -100,7 +170,7 @@
   \expandafter\ifstrequal\expandafter{#1}{optional}%
                                      {\optional{#2}}{\mandatory{#2}}}
 
-\newenvironment{myboxed}[1]
+\newenvironment{myboxed}[2][orange!60]
 {\begin{mdframed}[linecolor=black,
                   backgroundcolor=white,
                   outerlinewidth=0.25pt,
@@ -111,23 +181,26 @@
                   leftline=true,
                   bottomline=true,
                   linecolor=black!0,
-                  frametitleaboveskip=0.5em,
-                  frametitlebelowskip=0.5em,
-                  innerbottommargin=.5\baselineskip,
+                  frametitleaboveskip=0.35em,
+                  frametitlebelowskip=0.35em,
+                  innerbottommargin=0pt,
                   innerrightmargin=.5em,
                   innerleftmargin=.5em,
                   %userdefinedwidth=1\textwidth,
                   % frametitle={\scshape \bfseries \sffamily #1},
-                  frametitle={\footnotesize \bfseries \hspace*{0mm} #1},
+                  frametitle={\centering\footnotesize\bfseries\strut #2\strut},
                   % frametitlerule=true,
                   %frametitlerulecolor=red,
-                  frametitlebackgroundcolor=black!5,
+                  frametitlebackgroundcolor=#1,
                   frametitlerulewidth=2pt]}
 {\end{mdframed}}
 
 
 % global
-\setminted{breaklines=true, fontsize=\scriptsize, autogobble=true}
+% Default minted options: break long lines, small font, trim leading space,
+% and use a light gray background for code blocks. Per-instance options can
+% still override these (for example: \begin{minted}[bgcolor=white]{rust}).
+\setminted{breaklines=true, fontsize=\scriptsize, autogobble=true, bgcolor=gray!8}
 
 % --- Helper for two-column code + notes -----------------------------------
 % Usage: change default fraction with \setcodeleftfraction{0.6} (value in 0..1)
@@ -136,8 +209,35 @@
 \newcommand{\codeleftfraction}{0.6} % default fraction of \columnwidth for code
 \newcommand{\setcodeleftfraction}[1]{\renewcommand{\codeleftfraction}{#1}}
 
-
-
+% verbatim-safe environment replacing the previous \subcolumns macro.
+% Usage:
+% \begin{subcolumns}{<fraction>}
+%   <left side (can contain minted)>
+% \tcblower
+%   <right side (notes)>
+% \end{subcolumns}
+\newtcolorbox{subcolumns}[1]{%
+  enhanced,
+  breakable,
+  colback=white,
+  frame hidden,
+  boxsep=0mm,
+  top=0pt,
+  bottom=0pt,
+  left=1em,
+  right=0.5em,
+  sidebyside,
+  sidebyside gap=1mm,
+  sidebyside align=top,
+  % Explicitly disable any drawn separator between the two sides
+  segmentation style={draw=none},
+  % No outer frame or rule
+  boxrule=0pt,
+  lefthand width=#1\columnwidth,
+  righthand width=\dimexpr\columnwidth-#1\columnwidth\relax,
+  lefthand/.style={valign=t},
+  righthand/.style={left=0.5em,valign=t},
+}
 
 % -----------------------------------------------------------------------------
 \begin{document}
@@ -145,44 +245,130 @@
 \scriptsize
 
 
-\section*{\LARGE \rmfamily
-  RUST \textcolor{orange}{\mdseries for beginners}}
+\section*{\LARGE % \rmfamily
+  \raisebox{-.15\height}{\includesvg[height=1.2em]{logos/rust-logo-blk}}~RUST \textcolor{orange}{\mdseries for beginners}}
+
+% \vspace{\fill}
 
 \begin{multicols*}{4}
+
+  % --- Overview -----------------------------------------------------------
+  \begin{myboxed}{Overview}
+        {
+            Rust is a general-purpose programming language focused on performance, memory safety without a garbage collector, and concurrency, using an ownership system to prevent memory errors.
+            \vspace{0.5ex}
+            \newline 
+            \href{https://cheats.rs/\#hello-rust}{\textbf{Strengths}}:
+            \vspace{0.5ex}
+            \begin{itemize}[nosep,leftmargin=2em]
+                \item Compiled code about same performance as C / C++, and excellent memory and energy efficiency.
+                \item Can avoid 70\% of all safety issues present in C / C++, and most memory issues.
+                \item Strong type system prevents data races, brings 'fearless concurrency' (amongst others).
+                \item Seamless C interop, and dozens of supported platforms (based on LLVM).
+            \end{itemize} 
+            \vspace{1ex}
+            \href{https://rustup.rs/}{\textbf{Installation}}:
+            \vspace{-1ex}%
+            \begin{minted}[]{bash}
+                curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+            \end{minted}
+
+        }
+    \end{myboxed}%
+    \vspace{-2ex}%
+
     \vspace{\fill}
 
-    % --- Quick start -----------------------------------------------------------
-  \begin{myboxed}{Quick start \hfill
-      \API{https://matplotlib.org/tutorials/introductory/pyplot.html}}
-    {
-      % Adjust code/notes column split by changing the fraction below
-      % Example: \setcodeleftfraction{0.7} sets 70% of the width for the code
-      \setcodeleftfraction{0.5}%
-      % compute widths relative to current \columnwidth
-      \setlength{\leftcolwidth}{\codeleftfraction\columnwidth}%
-      \setlength{\rightcolwidth}{\dimexpr\columnwidth-\leftcolwidth\relax}%
+    % --- Toolbox -----------------------------------------------------------
+    \begin{myboxed}{ Toolbox \hfill }
+        {
+            \textbf{Rustup} is used to install and manage Rust toolchains. Toolchains are complete installations of Rust compiler and tools. \vfill
+            \vspace{0.5ex}
+            \begin{tabular}{@{}p{0.48\columnwidth}p{0.49\columnwidth}@{}}
+                \texttt{rustup show}                & Show installed toolchains                     \\
+                \texttt{rustup update}              & Update all toolchains                         \\
+                \texttt{rustup default TC}   & Set the default toolchain to \texttt{TC}             \\
+                \texttt{rustup component list}      & List available components                     \\
+                \texttt{rustup component add NAME}  & Add component \texttt{NAME}                   \\
+                \texttt{rustup target list}         & List available compilation targets            \\
+                \texttt{rustup target add NAME}     & Add a compilation target \texttt{NAME}        \\
+                \texttt{rustup docs}                & Open local Rust documentation in standard web browser   \\
+                \texttt{rustup uninstall TC}        & Uninstall toolchain \texttt{TC}               \\ 
+            \end{tabular}
 
-      % Left: code (minted). Right: notes (itemize). Use minipages so
-      % minted (verbatim) works correctly.
-      \noindent
-      \begin{minipage}[t]{\leftcolwidth}
-        \begin{minted}{rust}
-fn main() {
-  println!("Hello, World!");
-}
-        \end{minted}
-      \end{minipage}\hfill
-        \begin{minipage}[t]{\rightcolwidth}
-        \begin{itemize}[nosep]
-          \item Example bullet 1
-          \item Example bullet 2
-          \item Add your notes here
-        \end{itemize}
-      \end{minipage}
-    }
-  \end{myboxed}
+            \smallskip
+
+            \href{https://rust-lang.github.io/rustup/concepts/components.html}{\textbf{Components}}: parts of toolchains, partly \textit{man}datory partly \textit{opt}ional. \vfill
+            \vspace{0.5ex}
+            \begin{tabular}{@{}p{0.25\columnwidth}p{0.07\columnwidth}p{0.63\columnwidth}@{}}
+                \texttt{rustc}          & \textit{man} & The Rust compiler and \texttt{Rustdoc} \\
+                \texttt{cargo}          & \textit{man} & Package manager and build tool  \\
+                \texttt{rustfmt}        & \textit{opt} & Code formatter  \\
+                \texttt{rust-std}       & \textit{man} & Rust standard library, each target separate  \\
+                \texttt{rust-docs}      & \textit{opt} & Local copy of the Rust documentation  \\
+                \texttt{rust-analyzer}  & \textit{opt} & Language server for editors and IDEs  \\
+                \texttt{clippy}         & \textit{opt} & Lint tool providing extra checks for common mistakes and stylistic choices  \\
+                \texttt{miri}           & \textit{opt} & Experimental Rust interpreter \\
+                \texttt{rust-src}       & \textit{opt} & Local copy of standard library source  \\
+                \texttt{rust-mingw}     & \textit{opt} & Linker and platform libraries for building on the \textit{x86\_64-pc-windows-gnu} platform  \\
+                \texttt{llvm-tools}     & \textit{opt} & Collection of LLVM tools. Unstable \\
+                \texttt{rustc-dev}      & \textit{opt} & Compiler as a library, only needed for development of tools that link to the compiler  \\
+            \end{tabular}
+
+            \smallskip
+
+            \textbf{Cargo} is used to build and run Rust projects. \vfill
+            \vspace{0.5ex}
+            \begin{tabular}{@{}p{0.46\columnwidth}p{0.51\columnwidth}@{}}
+                \texttt{cargo init}                & Create a new binary project                                   \\
+                \texttt{cargo init --lib}          & Create a new library project                                  \\
+                \texttt{cargo check}               & Check code for errors                                         \\
+                \texttt{cargo clippy}              & Lint code                                                     \\
+                \texttt{cargo doc}                 & Generate project documentation                                        \\
+                \texttt{cargo run}                 & Run the project                                               \\
+                \texttt{cargo run --bin NAME}      & Run a specific project binary                                 \\
+                \texttt{cargo build}               & Build everything in debug mode                                \\
+                \texttt{cargo build --bin NAME}    & Build binary \texttt{NAME} in debug mode                               \\
+                \texttt{cargo build --release}     & Build everything in release mode                              \\
+                \texttt{cargo build --target NAME} & Build for a specific target \texttt{NAME}                                  \\
+                \texttt{cargo --explain CODE}      & Details on compiler error \texttt{CODE}                                \\
+                \texttt{cargo test}                & Run all tests                                                 \\
+                \texttt{cargo test TEST\_NAME}     & Run a specific test \texttt{TEST\_NAME}                                          \\
+                \texttt{cargo test --doc}          & Run doctests only                                             \\
+                \texttt{cargo test --examples}     & Run tests for example code only                               \\
+                \texttt{cargo bench}               & Run benchmarks
+            \end{tabular}
+        }
+    \end{myboxed}%
+
     \vspace{\fill}
 
+    % --- Primitive Data Types -----------------------------------------------------------
+    \begin{myboxed}{Primitive Data Types}
+        {
+            \href{https://cheats.rs/#memory-layout}{\textbf{Numeric Types and Boolean Types}} \vfill
+            \vspace{0.5ex}
+            \begin{tabular}{@{}p{0.21\columnwidth}p{0.17\columnwidth}>{\raggedright\arraybackslash}p{0.57\columnwidth}@{}}
+                \texttt{bool}            & 		\memlboxrow{0.3em}{2ex}{lightgray!60}{1}   & Boolean \texttt{true} or \texttt{false} \\
+                \texttt{u8,i8}          & 		\memlboxrow{0.3em}{2ex}{YellowGreen!60}{1} & \texttt{0..255}, \texttt{-128..127} \\
+                \texttt{u16,i16}        & 		\memlboxrow{0.6em}{2ex}{YellowGreen!60}{2} & \texttt{0..65535}, \texttt{-32768..32767} \\
+                \texttt{u32,i32}        & 		\memlboxrow{1.2em}{2ex}{YellowGreen!60}{4} & \texttt{0..4294967295}, \texttt{-2147483648..2147483647} \\
+                \texttt{u64,i64}        & 		\memlboxrow{2.4em}{2ex}{YellowGreen!60}{8} & \texttt{0..18446744073709551615}, \tiny{\texttt{-9223372036854775808.. 9223372036854775807}} \\
+                \texttt{u128,i128}      & 		\memlboxrow{4.8em}{2ex}{YellowGreen!60}{16} & \tiny{\texttt{0..340282366920938463463374607431768211455} \texttt{-170141183460469231731687303715884105728.. 170141183460469231731687303715884105727}} \\
+                \texttt{usize,isize}    & 		\memlboxrow{1.2em}{2ex}{Cyan!60}{4} ... & Same as \texttt{ptr} on platform.  \\
+                \texttt{f16} \emo{keycap-hash}          & 		\memlboxrow{0.6em}{2ex}{Magenta!60}{2} & 16-bit floating point \\
+            \end{tabular}
+
+            \smallskip
+        }
+    \end{myboxed}%
+
+            %     \vspace{0.5ex}
+            % \begin{minted}{rust}
+            %     fn main() {
+            %         println!("Hello, World!");
+            %     }
+            % \end{minted}
 
     %   % --- Figure anatomy --------------------------------------------------------
     %   \begin{myboxed}{Anatomy of a figure}

@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 # non interactive frontend for locales
 ENV DEBIAN_FRONTEND=noninteractive
@@ -15,6 +15,8 @@ RUN apt-get update && \
     texlive-fonts-extra \
     texlive-bibtex-extra \
     texlive-pictures \
+    texlive-xetex \
+    texlive-luatex \
     biber \
     latexmk \
     make \
@@ -24,6 +26,7 @@ RUN apt-get update && \
     curl \
     python3-pygments \
     sudo \
+    inkscape \
     && rm -rf /var/lib/apt/lists/*
 
 # RUN sudo cpan -i App::cpanminus \
