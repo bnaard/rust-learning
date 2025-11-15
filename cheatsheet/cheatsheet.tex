@@ -1,62 +1,31 @@
-
-\documentclass[draft,grid,graphpaper,cuttingmarks,optimize={density=600}]{pagelayout}
-
-\usepackage{helvet}
-\renewcommand{\familydefault}{\sfdefault}  % Switches to sans-serif (Helvetica-like)
-\fontsize{10pt}{12pt}\selectfont  % Sets font size to 10pt
-
-\pagewidth=297mm
-\pageheight=210mm
-\margin=2mm
-\gutter=5mm
-\bleed=2mm
-\setpagecolor{white}
-
+documentclass[12pt]{article}
+\usepackage[a3paper,landscape]{geometry}
+\usepackage{lipsum}
+\usepackage{lmodern}
+\usepackage{enumerate}
+\usepackage[poster]{tcolorbox}
+\tcbuselibrary{minted} % <- replace by \tcbuselibrary{listings}, if minted does not work for you↪→
+\pagestyle{empty}
 \begin{document}
-
-
-\page{
-  \setgrid{
-    {[1]{4}{2}{6}}
-      {[32]{1}{1}{1}{1}{1}{1}{1}{1}{1}{1}{1}{1}}
-  }
-
-  \place{1 0 2 3}
-  \text{
-    \begin{tcolorbox}[
-        size=title,
-        left=1.0mm,
-        top=1.0mm,
-        colback=orange!5!white,
-        colframe=orange!75,
-        coltitle=orange!10!black,
-        fonttitle=\sffamily\bfseries\large,
-        adjusted title=\n,
-        title=Overview,
-        fontupper=\sffamily\small,
-        fontlower=\sffamily\small,
-        subtitle style={
-            boxrule=0.4pt,
-            colback=orange!50!orange!20!white,
-            colupper=orange!50!gray,
-            fontupper=\sffamily\bfseries\small,
-          }
-      ]
-      This is another \textbf{tcolorbox}.
-      \tcbsubtitle{My subtitle}
-      This is another \textbf{tcolorbox}.
-      \tcblower
-      Here, you see the lower part of the box.
-    \end{tcolorbox}
-    \begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=My nice heading]
-      This is another \textbf{tcolorbox}.
-      \tcblower
-      Here, you see the lower part of the box.
-    \end{tcolorbox}
-  }
-
-}
-
-
-
+\begin{tcbposter}[
+        coverage = {
+                spread,
+                interior style={top color=yellow,bottom color=yellow!50!red},
+                watermark text={\LaTeX\ Poster},
+                watermark color=yellow,
+            },
+        poster = {showframe=false,columns=4,rows=5},
+        boxes = {
+                enhanced standard jigsaw,sharp
+                corners=downhill,arc=3mm,boxrule=1mm,↪→
+                colback=white,opacityback=0.75,colframe=blue,
+                title style={left color=black,right color=cyan},
+                fonttitle=\bfseries\Large\scshape
+            }
+    ]
+    \posterbox[adjusted title=Contact,fit,fit basedim=12pt]
+    {name=contact,column*=4,span=1.5,between=process and bottom}{
+        \lipsum[2]
+    }
+\end{tcbposter}
 \end{document}
