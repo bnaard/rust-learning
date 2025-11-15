@@ -2,6 +2,7 @@ FROM ubuntu:24.04
 
 # non interactive frontend for locales
 ENV DEBIAN_FRONTEND=noninteractive
+ARG IMAGE_MAGICK_VERSION=7.1.1-41
 
 # installing texlive and utils
 RUN apt-get update && \
@@ -21,13 +22,37 @@ RUN apt-get update && \
     latexmk \
     make \
     git \
+    wget \
     procps \
     locales \
     curl \
     python3-pygments \
     sudo \
     inkscape \
+    libpng-dev \
+    libjpeg-dev \
+    libtiff-dev \
+    build-essential \ 
+    checkinstall \
+    libltdl-dev \
     && rm -rf /var/lib/apt/lists/*
+
+# Download ImageMagick
+RUN wget https://download.imagemagick.org/ImageMagick/download/ImageMagick.tar.gz \
+    && tar -xvzf ImageMagick.tar.gz \
+    && sudo rm -rf ImageMagick.tar.gz \
+    && ls -d */ | grep '^ImageMagick*' \
+    && cd $(ls -d */ | grep '^ImageMagick*') \
+    && ./configure --with-modules  \
+    && make \
+    &&  make install \
+    && ldconfig /usr/local/lib
+
+RUN echo "shell_escape_commands = pagelayoutapi" >> /etc/texmf/texmf.d/00debian.cnf \
+    && update-texmf
+
+    # RUN wget -P /usr/local/bin https://github.com/friedemannbartels/latex-pagelayout/tree/main/scripts/pagelayoutapi \
+#     && chmod +x /usr/local/bin/pagelayoutapi
 
 # RUN sudo cpan -i App::cpanminus \
 #     && sudo cpanm Log::Dispatch::File YAML::Tiny File::HomeDir Unicode::GCString Log::Log4perl

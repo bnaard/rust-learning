@@ -1,0 +1,62 @@
+
+\documentclass[draft,grid,graphpaper,cuttingmarks,optimize={density=600}]{pagelayout}
+
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}  % Switches to sans-serif (Helvetica-like)
+\fontsize{10pt}{12pt}\selectfont  % Sets font size to 10pt
+
+\pagewidth=297mm
+\pageheight=210mm
+\margin=2mm
+\gutter=5mm
+\bleed=2mm
+\setpagecolor{white}
+
+\begin{document}
+
+
+\page{
+  \setgrid{
+    {[1]{4}{2}{6}}
+      {[32]{1}{1}{1}{1}{1}{1}{1}{1}{1}{1}{1}{1}}
+  }
+
+  \place{1 0 2 3}
+  \text{
+    \begin{tcolorbox}[
+        size=title,
+        left=1.0mm,
+        top=1.0mm,
+        colback=orange!5!white,
+        colframe=orange!75,
+        coltitle=orange!10!black,
+        fonttitle=\sffamily\bfseries\large,
+        adjusted title=\n,
+        title=Overview,
+        fontupper=\sffamily\small,
+        fontlower=\sffamily\small,
+        subtitle style={
+            boxrule=0.4pt,
+            colback=orange!50!orange!20!white,
+            colupper=orange!50!gray,
+            fontupper=\sffamily\bfseries\small,
+          }
+      ]
+      This is another \textbf{tcolorbox}.
+      \tcbsubtitle{My subtitle}
+      This is another \textbf{tcolorbox}.
+      \tcblower
+      Here, you see the lower part of the box.
+    \end{tcolorbox}
+    \begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=My nice heading]
+      This is another \textbf{tcolorbox}.
+      \tcblower
+      Here, you see the lower part of the box.
+    \end{tcolorbox}
+  }
+
+}
+
+
+
+\end{document}
