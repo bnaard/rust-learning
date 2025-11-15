@@ -1,31 +1,173 @@
-documentclass[12pt]{article}
-\usepackage[a3paper,landscape]{geometry}
+% -----------------------------------------------------------------------------
+% RUST cheat sheet - Released under the MIT License
+% -----------------------------------------------------------------------------
+
+\documentclass[10pt]{article}
+
+
+% --- Hyphenation Rules -------------------------------------------------------------
+\usepackage[USenglish]{babel}
+
+% --- Fonts -------------------------------------------------------------
+
+% Use a modern, Arial-like sans-serif as the document default (Helvetica
+% substitute). This is PDFLaTeX-safe. If you prefer true Arial and are
+% compiling with XeLaTeX/LuaLaTeX, switch to fontspec instead and load
+% the system Arial.
+\usepackage[scaled]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+% font for the word "RUST" in the header
+\usepackage{alfaslabone}
+
+\usepackage[T1]{fontenc}
+
+% --- Page layout -------------------------------------------------------------
+\usepackage[a4paper,landscape, right=2.5mm, left=2.5mm, top=2.5mm, bottom=2.5mm]{geometry}
+
+% --- TColorbox -------------------------------------------------------------
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,raster,listings,breakable}
+
+% --- Listings -------------------------------------------------------------
+\usepackage[outputdir=out]{minted}
+
+% Default minted options: break long lines, small font, trim leading space,
+% and use a light gray background for code blocks. Per-instance options can
+% still override these (for example: \begin{minted}[bgcolor=white]{rust}).
+\setminted{breaklines=true, fontsize=\scriptsize, autogobble=true, bgcolor=gray!8}
+
+
+% --- Color Names -------------------------------------------------------------
+\usepackage[dvipsnames*,svgnames]{xcolor}
+
+% --- Graphics ----------------------------------------------------------------
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{svg}
+\graphicspath{{./figures/}{./icons/}{./logos/}}
+
+% --- URL and href ----------------------------------------------------
+\colorlet{citecolor}{black}
+\colorlet{linkcolor}{black}
+\colorlet{urlcolor}{black}
+\usepackage[
+  bookmarks=true,
+  breaklinks=true,
+  pdfborder={0 0 0},
+  citecolor=citecolor,
+  linkcolor=linkcolor,
+  urlcolor=urlcolor,
+  colorlinks=true,
+  linktocpage=false,
+  hyperindex=true,
+  colorlinks=true,
+  linktocpage=false,
+  linkbordercolor=white]{hyperref}
+
+% --- Helpers ----------------------------------------------------
 \usepackage{lipsum}
-\usepackage{lmodern}
-\usepackage{enumerate}
-\usepackage[poster]{tcolorbox}
-\tcbuselibrary{minted} % <- replace by \tcbuselibrary{listings}, if minted does not work for you↪→
+% \usepackage{lmodern}
+% \usepackage{enumerate}
+
+% --- Default options ---------------------------------------------------------
 \pagestyle{empty}
-\begin{document}
-\begin{tcbposter}[
-        coverage = {
-                spread,
-                interior style={top color=yellow,bottom color=yellow!50!red},
-                watermark text={\LaTeX\ Poster},
-                watermark color=yellow,
-            },
-        poster = {showframe=false,columns=4,rows=5},
-        boxes = {
-                enhanced standard jigsaw,sharp
-                corners=downhill,arc=3mm,boxrule=1mm,↪→
-                colback=white,opacityback=0.75,colframe=blue,
-                title style={left color=black,right color=cyan},
-                fonttitle=\bfseries\Large\scshape
-            }
-    ]
-    \posterbox[adjusted title=Contact,fit,fit basedim=12pt]
-    {name=contact,column*=4,span=1.5,between=process and bottom}{
-        \lipsum[2]
+% \setlength\parindent{0pt}
+% \setlength{\tabcolsep}{2pt}
+% \baselineskip=0pt
+% \setlength\columnsep{1.75mm}
+
+
+% --- Macros ------------------------------------------------------------------
+
+% Custom command for adding a shorcut, like: "CTRL+C ........ Copy"
+\newcommand{\command}[2]{#1~\dotfill{}~#2\\} 
+
+% Colorbox environment for the header section
+\NewTColorBox[]{headerbox}{ O{white} d"" !O{} }
+    {
+        size=minimal,
+        colback=#1!5!white,
+        colframe=#1!75!black,
+        coltitle=#1!10!black,
+        fontupper=\sffamily\small,
+        IfValueT={#2}{watermark text={#2}},
+        #3
     }
-\end{tcbposter}
+
+% Colorbox environment for a cheat sheet section
+\NewTColorBox[]{cheatbox}{ O{orange} m d"" !O{} }
+    {
+        size=title,
+        left=1.0mm,
+        arc=0.25mm,
+        colback=#1!5!white,
+        colframe=#1!75!black,
+        coltitle=#1!10!black,
+        colbacktitle=#1!75!white,
+        fonttitle=\sffamily\bfseries,
+        toptitle=0.75mm,
+        bottomtitle=0.1mm,
+        adjusted title=\n,
+        title=#2,
+        fontupper=\sffamily\small,
+        fontlower=\sffamily\small,
+        subtitle style={
+            top=0.5mm,
+            bottom=0.1mm,
+            boxrule=0.4pt,
+            colback=#1!50!#1!20!white,
+            colupper=#1!50!gray,
+            fontupper=\sffamily\bfseries\small,
+          },
+          IfValueT={#3}{watermark text={#3}},
+          #4
+    }
+
+
+% -----------------------------------------------------------------------------
+% Main Document
+% -----------------------------------------------------------------------------
+
+\begin{document}
+
+\begin{tcbraster}[raster columns=4, raster equal height]
+
+    \begin{headerbox}[white]{}
+        \LARGE\raisebox{-0.1\height}{\includesvg[height=0.8\baselineskip]{logos/rust-logo-blk}}~{\fontfamily{AlphaSlabOne-TLF}\selectfont RUST} \textcolor{orange}{\mdseries for beginners}
+    \end{headerbox}
+
+    % \begin{headerbox}[orange]{}
+    %     \centering
+    %     
+    % \end{headerbox}
+
+    % \begin{headerbox}[orange]{}
+    %     \centering
+    %     \small{Version 2.0 - June 2024}
+    % \end{headerbox}
+
+    % \begin{headerbox}[orange]{}
+    %     \centering
+    %     \small{Author: Your Name}
+    % \end{headerbox}
+
+    % \begin{headerbox}[orange]{}
+    %     \centering
+    % \end{headerbox}
+
+\end{tcbraster}
+
+\begin{tcbraster}[raster columns=12, raster equal height]
+
+    \begin{cheatbox}[orange]{My title}"All together"[raster multicolumn=3]
+        This is a tcolorbox.
+        \tcbsubtitle{My subtitle}
+        This is another \textbf{tcolorbox}.
+        \tcblower
+        Here, you see the lower part of the box.
+    \end{cheatbox}
+
+\end{tcbraster}
+
 \end{document}
