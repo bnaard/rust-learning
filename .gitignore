@@ -41,6 +41,7 @@
 
 # minted package output
 _minted-*
+*.minted
 
 # latexmk
 latexmkrc

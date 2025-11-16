@@ -26,8 +26,6 @@
 \usepackage[a4paper,landscape, right=2.5mm, left=2.5mm, top=2.5mm, bottom=2.5mm]{geometry}
 
 % --- Listings -----------------------------------------------------------------
-% separate loading of minted package to set outputdir option
-\usepackage[outputdir=out]{minted}
 
 % Default minted options: break long lines, small font, trim leading space,
 % and use a light gray background for code blocks. Per-instance options can
@@ -201,21 +199,21 @@
         Install and manage Rust toolchains (compiler and tools).
 
         \begin{tcolorbox}[enhanced,
-        fonttitle=\bfseries\large, fontupper=\normalsize\sffamily,
-        colback=yellow9!20, colframe=blue2, colbacktitle=blue5, coltitle=white,
-        center title, clip upper,
-        title=My table,
-        tabularray={
-        colspec={X|[0.5mm]X|X|X|X|[0.5mm]X},
-        column{2-Z}={halign=r},
-        row{1,Z}={font=\bfseries,bg=red9},
-        }
-        ]
-        Group & One & Two & Three & Four & Sum\\\hline[0.5mm]
-        Red & 1000.00 & 2000.00 & 3000.00 & 4000.00 & 10000.00\\\hline
-        Green & 2000.00 & 3000.00 & 4000.00 & 5000.00 & 14000.00\\\hline
-        Blue & 3000.00 & 4000.00 & 5000.00 & 6000.00 & 18000.00\\\hline[0.5mm]
-        Sum & 6000.00 & 9000.00 & 12000.00 & 15000.00 & 42000.00
+            fonttitle=\bfseries\large, fontupper=\normalsize\sffamily,
+            colback=orange!20, colframe=blue2, colbacktitle=blue5, coltitle=white,
+            center title, clip upper,
+            title=My table,
+            tabularray={
+            colspec={X|[0.5mm]X|X|X|X|[0.5mm]X},
+            column{2-Z}={halign=r},
+            row{1,Z}={font=\bfseries,bg=red9},
+                }
+            ]
+            Group & One & Two & Three & Four & Sum\\\hline[0.5mm]
+            Red & 1000.00 & 2000.00 & 3000.00 & 4000.00 & 10000.00\\\hline
+            Green & 2000.00 & 3000.00 & 4000.00 & 5000.00 & 14000.00\\\hline
+            Blue & 3000.00 & 4000.00 & 5000.00 & 6000.00 & 18000.00\\\hline[0.5mm]
+            Sum & 6000.00 & 9000.00 & 12000.00 & 15000.00 & 42000.00
         \end{tcolorbox}
 
         % \vspace{0.5ex}
