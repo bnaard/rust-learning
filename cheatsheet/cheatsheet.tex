@@ -92,72 +92,6 @@
 % Custom command for adding a shorcut, like: "CTRL+C ........ Copy"
 \newcommand{\command}[2]{#1~\dotfill{}~#2\\} 
 
-% Colorbox environment for the header section
-\NewTColorBox[]{headerbox}{ O{white} m d"" !O{} }
-    {
-        size=minimal,
-        colback=#1!5!white,
-        colframe=#1!75!black,
-        coltitle=#1!10!black,
-        frame empty,
-        fontupper=\sffamily\small,
-        title=#2,
-        IfValueT={#3}{watermark text={#3}},
-        #4
-    }
-
-% Colorbox environment for a cheat sheet section
-\NewTColorBox[]{cheatbox}{ O{orange} m d"" !O{} }
-    {
-        size=title,
-        left=0.2em,
-        right=0.2em,
-        arc=0.25mm,
-        colback=#1!2!white,
-        colframe=#1!75!black,
-        coltitle=#1!10!black,
-        colbacktitle=#1!75!white,
-        fonttitle=\sffamily\bfseries,
-        toptitle=0mm,
-        bottomtitle=0mm,
-        adjusted title=#2,
-        fontupper=\sffamily\small,
-        fontlower=\sffamily\small,
-        halign=left,
-        subtitle style={
-            height=1.1\baselineskip,
-            top=0.4mm,
-            bottom=0mm,
-            boxrule=0.2pt,
-            boxsep=0.1mm,
-            colback=#1!50!#1!20!white,
-            colupper=#1!50!gray,
-            fontupper=\sffamily\bfseries\small,
-            coltext=#1!10!black,
-          },
-        IfValueT={#3}{watermark text={#3}},
-        #4
-    }
-
-% Posterbox environment for cheatsheet sections
-\NewDocumentEnvironment{cheatposterbox}{}
-    {
-        \begin{posterboxenv}[title=My title]{name=A,column=5,row=2, span=2, rowspan=3}
-    }
-    {
-        \end{posterboxenv}
-    }
-
-\NewDocumentEnvironment{mycustomenv}{ O{} m }% #1 optional, #2 mandatory
-{%
-  % Begin code: open posterboxenv with passed arguments
-  \begin{posterboxenv}[#1]{#2}%
-}%
-{%
-  % End code: close posterboxenv
-  \end{posterboxenv}%
-}
-
 % Colorbox environment for bash listings
 \newtcblisting{bashlisting}
     {
@@ -185,6 +119,14 @@
     }
 
 
+% Skin for header box
+\tcbsubskin{headerboxskin}{empty}{
+        size=minimal,
+        coltitle=black!10!black,
+}
+
+
+% Skin for orange-based cheat section boxes
 \tcbsubskin{cheatboxorangeskin}{standard}{
     size=title, 
     left=0.2em,
@@ -219,43 +161,24 @@
 
 \begin{document}
 
-% === Header =================================================================
-\begin{tcbraster}[raster columns=4, raster equal height]
 
-    \begin{headerbox}[white]{}[raster multicolumn=2]
-        \LARGE\raisebox{-0.1\height}{\includesvg[height=0.8\baselineskip]{logos/rust-logo-blk}}~{\fontfamily{AlphaSlabOne-TLF}\selectfont RUST} \textcolor{orange}{\mdseries for beginners}
-    \end{headerbox}
-
-\end{tcbraster}
-
+% === Page 1 =================================================================
 
 \begin{tcbposter}[
-        poster = {showframe,spacing=1em, columns=12},
-        boxes = {beamer,colframe=blue!50!black,colback=blue!50,colupper=yellow!50},
+        poster = {spacing=1em, columns=12},
+        boxes = {},
     ]
 
-    \begin{posterboxenv}{name=B,column=1,row=1, span=2, rowspan=2}
-        My first box.
+    % === Header ================================================================
+    \begin{posterboxenv}[skin=headerboxskin]
+                        {name=headertitle, span=3, below=top}
+        \LARGE\raisebox{-0.1\height}{\includesvg[height=0.8\baselineskip]{logos/rust-logo-blk}}~{\fontfamily{AlphaSlabOne-TLF}\selectfont RUST} \textcolor{orange}{\mdseries for beginners}
     \end{posterboxenv}
 
-    % \begin{mycustomenv}[title=My title]{name=A,column=5,row=2, span=2, rowspan=3}
-    %     Content here.
-    % \end{mycustomenv}
 
-    % \begin{posterboxenv}[title=My title]{name=A,column=2,between=top and bottom}
-    % \begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=My nice heading]
-
-\end{tcbposter}
-
-\pagebreak
-
-
-
-% === Page 1: Main content ======================================================
-\begin{tcbraster}[raster columns=12]
-
-    % --- Overview -------------------------------------------------------------
-    \begin{tcolorbox}[skin=cheatboxorangeskin, title=Overview, raster multicolumn=3]
+    % === Overview ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Overview]
+                        {name=overview,column=1,below=headertitle, span=3}
         Rust is a general-purpose programming language focused on performance, memory safety without garbage collector, and concurrency, using an ownership system preventing memory errors.
 
         \tcbsubtitle{\href{https://cheats.rs/\#hello-rust}{Strengths}}
@@ -270,12 +193,12 @@
         \begin{bashlisting}
             curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
         \end{bashlisting}
-    \end{tcolorbox}
+    \end{posterboxenv}
 
 
-    % --- Tools ----------------------------------------------------------------
-    \begin{tcolorbox}[skin=cheatboxorangeskin, title=Tools, raster multicolumn=3]
-
+    % === Tools ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Tools]
+                        {name=tools,column=1,below=overview, span=3}
         \tcbsubtitle{Rustup}
         {
             Install and manage Rust toolchains (compiler and tools).
@@ -380,11 +303,13 @@
             \end{tcolorbox}
         }
 
+    \end{posterboxenv}
+
+\end{tcbposter}
+
+\pagebreak
 
 
-    \end{tcolorbox}
 
-
-\end{tcbraster}
 
 \end{document}
