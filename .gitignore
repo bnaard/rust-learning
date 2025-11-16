@@ -37,6 +37,7 @@
 *.tdo
 *.pygtex
 *.pygstyle
+*.listing
 
 # minted package output
 _minted-*
