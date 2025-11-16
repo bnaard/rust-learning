@@ -165,7 +165,7 @@
 % === Page 1 =================================================================
 
 \begin{tcbposter}[
-        poster = {spacing=1em, columns=12},
+        poster = {spacing=0.6em, columns=12},
         boxes = {},
     ]
 
@@ -186,7 +186,7 @@
             \item Compiled code about same performance as C / C++, and excellent memory and energy efficiency.
             \item Can avoid 70\% of all safety issues present in C / C++, and most memory issues.
             \item Strong type system prevents data races, brings 'fearless concurrency' (amongst others).
-            \item Seamless C interop, and dozens of supported platforms (based on LLVM).
+            \item Seamless C interop, dozens of supported platforms (LLVM).
         \end{itemize}
 
         \tcbsubtitle{\href{https://rustup.rs/}{Installation}}
@@ -224,7 +224,7 @@
                 \texttt{rustup component add C}    & Add component \texttt{C}                           \\
                 \texttt{rustup target list}        & List available compilation targets                    \\
                 \texttt{rustup target add T}       & Add a compilation target \texttt{T}                \\
-                \texttt{rustup docs}               & Open local Rust documentation in standard web browser \\
+                \texttt{rustup docs}               & Open local Rust docs in browser \\
                 \texttt{rustup uninstall TC}       & Uninstall toolchain \texttt{TC}                       \\
             \end{tcolorbox}
         }
@@ -298,7 +298,6 @@
                 \texttt{cargo test}                & Run all tests                                                 \\
                 \texttt{cargo test TEST\_NAME}     & Run a specific test \texttt{TEST\_NAME}                                          \\
                 \texttt{cargo test --doc}          & Run doctests only                                             \\
-                \texttt{cargo test --examples}     & Run tests for example code only                               \\
                 \texttt{cargo bench}               & Run benchmarks
             \end{tcolorbox}
         }
