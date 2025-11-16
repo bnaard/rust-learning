@@ -48,8 +48,11 @@ RUN wget https://download.imagemagick.org/ImageMagick/download/ImageMagick.tar.g
     &&  make install \
     && ldconfig /usr/local/lib
 
-RUN echo "shell_escape_commands = pagelayoutapi" >> /etc/texmf/texmf.d/00debian.cnf \
-    && update-texmf
+# RUN tlmgr update --self \
+#     && tlmgr update --all
+
+# RUN echo "shell_escape_commands = pagelayoutapi" >> /etc/texmf/texmf.d/00debian.cnf \
+#     && update-texmf
 
     # RUN wget -P /usr/local/bin https://github.com/friedemannbartels/latex-pagelayout/tree/main/scripts/pagelayoutapi \
 #     && chmod +x /usr/local/bin/pagelayoutapi

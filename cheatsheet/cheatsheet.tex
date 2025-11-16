@@ -1,14 +1,14 @@
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------------------------------------------------
 % RUST cheat sheet - Released under the MIT License
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------------------------------------------------
 
-\documentclass[10pt]{article}
+\documentclass[8pt]{extarticle}
 
 
-% --- Hyphenation Rules -------------------------------------------------------------
+% --- Hyphenation Rules --------------------------------------------------------
 \usepackage[USenglish]{babel}
 
-% --- Fonts -------------------------------------------------------------
+% --- Fonts --------------------------------------------------------------------
 
 % Use a modern, Arial-like sans-serif as the document default (Helvetica
 % substitute). This is PDFLaTeX-safe. If you prefer true Arial and are
@@ -22,32 +22,36 @@
 
 \usepackage[T1]{fontenc}
 
-% --- Page layout -------------------------------------------------------------
+% --- Page layout --------------------------------------------------------------
 \usepackage[a4paper,landscape, right=2.5mm, left=2.5mm, top=2.5mm, bottom=2.5mm]{geometry}
 
-% --- TColorbox -------------------------------------------------------------
-\usepackage{tcolorbox}
-\tcbuselibrary{skins,raster,listings,breakable}
-
-% --- Listings -------------------------------------------------------------
+% --- Listings -----------------------------------------------------------------
+% separate loading of minted package to set outputdir option
 \usepackage[outputdir=out]{minted}
 
 % Default minted options: break long lines, small font, trim leading space,
 % and use a light gray background for code blocks. Per-instance options can
 % still override these (for example: \begin{minted}[bgcolor=white]{rust}).
-\setminted{breaklines=true, fontsize=\scriptsize, autogobble=true, bgcolor=gray!8}
+% \setminted{breaklines=true, fontsize=\scriptsize, autogobble=true, bgcolor=gray!8}
 
+% --- TColorbox ---------------------------------------------------------------
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,raster,listings,breakable,minted}
+
+
+% --- Tables -------------------------------------------------------------------
+\usepackage{tabularray}
 
 % --- Color Names -------------------------------------------------------------
 \usepackage[dvipsnames*,svgnames]{xcolor}
 
-% --- Graphics ----------------------------------------------------------------
+% --- Graphics -----------------------------------------------------------------
 \usepackage{tikz}
 \usepackage{graphicx}
 \usepackage{svg}
 \graphicspath{{./figures/}{./icons/}{./logos/}}
 
-% --- URL and href ----------------------------------------------------
+% --- URL and href -----------------------------------------------------------
 \colorlet{citecolor}{black}
 \colorlet{linkcolor}{black}
 \colorlet{urlcolor}{black}
@@ -65,10 +69,9 @@
   linktocpage=false,
   linkbordercolor=white]{hyperref}
 
-% --- Helpers ----------------------------------------------------
+% --- Helpers -----------------------------------------------------------------
 \usepackage{lipsum}
-% \usepackage{lmodern}
-% \usepackage{enumerate}
+\usepackage{enumitem}
 
 % --- Default options ---------------------------------------------------------
 \pagestyle{empty}
@@ -84,15 +87,16 @@
 \newcommand{\command}[2]{#1~\dotfill{}~#2\\} 
 
 % Colorbox environment for the header section
-\NewTColorBox[]{headerbox}{ O{white} d"" !O{} }
+\NewTColorBox[]{headerbox}{ O{white} m d"" !O{} }
     {
         size=minimal,
         colback=#1!5!white,
         colframe=#1!75!black,
         coltitle=#1!10!black,
         fontupper=\sffamily\small,
-        IfValueT={#2}{watermark text={#2}},
-        #3
+        title=#2,
+        IfValueT={#3}{watermark text={#3}},
+        #4
     }
 
 % Colorbox environment for a cheat sheet section
@@ -101,72 +105,154 @@
         size=title,
         left=1.0mm,
         arc=0.25mm,
-        colback=#1!5!white,
+        colback=#1!2!white,
         colframe=#1!75!black,
         coltitle=#1!10!black,
         colbacktitle=#1!75!white,
         fonttitle=\sffamily\bfseries,
-        toptitle=0.75mm,
-        bottomtitle=0.1mm,
-        adjusted title=\n,
-        title=#2,
+        toptitle=0mm,
+        bottomtitle=0mm,
+        adjusted title=#2,
         fontupper=\sffamily\small,
         fontlower=\sffamily\small,
+        halign=left,
         subtitle style={
-            top=0.5mm,
-            bottom=0.1mm,
-            boxrule=0.4pt,
+            height=0.9\baselineskip,
+            top=0.4mm,
+            bottom=0mm,
+            boxrule=0.2pt,
+            boxsep=0.1mm,
             colback=#1!50!#1!20!white,
             colupper=#1!50!gray,
             fontupper=\sffamily\bfseries\small,
+            coltext=#1!10!black,
           },
           IfValueT={#3}{watermark text={#3}},
           #4
     }
 
+% Colorbox environment for bash listings
+\newtcblisting{bashlisting}
+    {
+        size=minimal,
+        listing engine=minted,
+        listing only,
+        minted style=friendly,
+        minted language=bash,
+        minted options={
+            fontsize=\footnotesize,
+            breaklines,
+            autogobble,
+        },
+        colback=gray!10!white,
+        colframe=gray!10!white,
+        listing only,
+        left=0em,
+        enhanced,
+        % overlay={
+        %     \begin{tcbclipinterior}
+        %         \fill[red!20!blue!20!white] (frame.south west)
+        %         rectangle ([xshift=5mm]frame.north west);
+        %     \end{tcbclipinterior}
+        % }
+    }
 
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------------------------------------------------
 % Main Document
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------------------------------------------------
 
 \begin{document}
 
+% === Header =================================================================
 \begin{tcbraster}[raster columns=4, raster equal height]
 
-    \begin{headerbox}[white]{}
+    \begin{headerbox}[white]{}[raster multicolumn=2]
         \LARGE\raisebox{-0.1\height}{\includesvg[height=0.8\baselineskip]{logos/rust-logo-blk}}~{\fontfamily{AlphaSlabOne-TLF}\selectfont RUST} \textcolor{orange}{\mdseries for beginners}
     \end{headerbox}
 
-    % \begin{headerbox}[orange]{}
-    %     \centering
-    %     
-    % \end{headerbox}
-
-    % \begin{headerbox}[orange]{}
-    %     \centering
-    %     \small{Version 2.0 - June 2024}
-    % \end{headerbox}
-
-    % \begin{headerbox}[orange]{}
-    %     \centering
-    %     \small{Author: Your Name}
-    % \end{headerbox}
-
-    % \begin{headerbox}[orange]{}
-    %     \centering
-    % \end{headerbox}
-
 \end{tcbraster}
 
-\begin{tcbraster}[raster columns=12, raster equal height]
+% === Page 1: Main content ======================================================
+\begin{tcbraster}[raster columns=12]
 
-    \begin{cheatbox}[orange]{My title}"All together"[raster multicolumn=3]
-        This is a tcolorbox.
-        \tcbsubtitle{My subtitle}
-        This is another \textbf{tcolorbox}.
-        \tcblower
-        Here, you see the lower part of the box.
+    % --- Overview -------------------------------------------------------------
+    \begin{cheatbox}[orange]{Overview}[raster multicolumn=3]
+        Rust is a general-purpose programming language focused on performance, memory safety without a garbage collector, and concurrency, using an ownership system to prevent memory errors.
+
+        \tcbsubtitle{\href{https://cheats.rs/\#hello-rust}{Strengths}}
+        \begin{itemize}[nosep,leftmargin=1.5em]
+            \item Compiled code about same performance as C / C++, and excellent memory and energy efficiency.
+            \item Can avoid 70\% of all safety issues present in C / C++, and most memory issues.
+            \item Strong type system prevents data races, brings 'fearless concurrency' (amongst others).
+            \item Seamless C interop, and dozens of supported platforms (based on LLVM).
+        \end{itemize}
+
+        \tcbsubtitle{\href{https://rustup.rs/}{Installation}}
+        \begin{bashlisting}
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+        \end{bashlisting}
+
     \end{cheatbox}
+
+    % --- Tools ----------------------------------------------------------------
+    \begin{cheatbox}[orange]{Tools}[raster multicolumn=3]
+
+        \tcbsubtitle{Rustup}
+        Install and manage Rust toolchains (compiler and tools).
+
+        \begin{tcolorbox}[enhanced,
+        fonttitle=\bfseries\large, fontupper=\normalsize\sffamily,
+        colback=yellow9!20, colframe=blue2, colbacktitle=blue5, coltitle=white,
+        center title, clip upper,
+        title=My table,
+        tabularray={
+        colspec={X|[0.5mm]X|X|X|X|[0.5mm]X},
+        column{2-Z}={halign=r},
+        row{1,Z}={font=\bfseries,bg=red9},
+        }
+        ]
+        Group & One & Two & Three & Four & Sum\\\hline[0.5mm]
+        Red & 1000.00 & 2000.00 & 3000.00 & 4000.00 & 10000.00\\\hline
+        Green & 2000.00 & 3000.00 & 4000.00 & 5000.00 & 14000.00\\\hline
+        Blue & 3000.00 & 4000.00 & 5000.00 & 6000.00 & 18000.00\\\hline[0.5mm]
+        Sum & 6000.00 & 9000.00 & 12000.00 & 15000.00 & 42000.00
+        \end{tcolorbox}
+
+        % \vspace{0.5ex}
+        \begin{tabular}{@{}p{0.48\columnwidth}p{0.49\columnwidth}@{}}
+            \texttt{rustup show}               & Show installed toolchains                             \\
+            \texttt{rustup update}             & Update all toolchains                                 \\
+            \texttt{rustup default TC}         & Set the default toolchain to \texttt{TC}              \\
+            \texttt{rustup component list}     & List available components                             \\
+            \texttt{rustup component add NAME} & Add component \texttt{NAME}                           \\
+            \texttt{rustup target list}        & List available compilation targets                    \\
+            \texttt{rustup target add NAME}    & Add a compilation target \texttt{NAME}                \\
+            \texttt{rustup docs}               & Open local Rust documentation in standard web browser \\
+            \texttt{rustup uninstall TC}       & Uninstall toolchain \texttt{TC}                       \\
+        \end{tabular}
+
+        \tcbsubtitle{\href{https://rust-lang.github.io/rustup/concepts/components.html}{Components}}
+        Parts of toolchains, partly \textit{man}datory partly \textit{opt}ional.
+        \vspace{0.5ex}
+        \begin{tabular}{@{}p{0.25\columnwidth}p{0.07\columnwidth}p{0.63\columnwidth}@{}}
+            \texttt{rustc}         & \textit{man} & The Rust compiler and \texttt{Rustdoc}                                                     \\
+            \texttt{cargo}         & \textit{man} & Package manager and build tool                                                             \\
+            \texttt{rustfmt}       & \textit{opt} & Code formatter                                                                             \\
+            \texttt{rust-std}      & \textit{man} & Rust standard library, each target separate                                                \\
+            \texttt{rust-docs}     & \textit{opt} & Local copy of the Rust documentation                                                       \\
+            \texttt{rust-analyzer} & \textit{opt} & Language server for editors and IDEs                                                       \\
+            \texttt{clippy}        & \textit{opt} & Lint tool providing extra checks for common mistakes and stylistic choices                 \\
+            \texttt{miri}          & \textit{opt} & Experimental Rust interpreter                                                              \\
+            \texttt{rust-src}      & \textit{opt} & Local copy of standard library source                                                      \\
+            \texttt{rust-mingw}    & \textit{opt} & Linker and platform libraries for building on the \textit{x86\_64-pc-windows-gnu} platform \\
+            \texttt{llvm-tools}    & \textit{opt} & Collection of LLVM tools. Unstable                                                         \\
+            \texttt{rustc-dev}     & \textit{opt} & Compiler as a library, only needed for development of tools that link to the compiler      \\
+        \end{tabular}
+
+
+
+    \end{cheatbox}
+
 
 \end{tcbraster}
 
