@@ -6,6 +6,7 @@
 % Latex: https://ftp.agdsn.de/pub/mirrors/latex/dante/macros/latex/base/usrguide.pdf
 % Tabularray: https://mirror.physik.tu-berlin.de/pub/CTAN/macros/latex/contrib/tabularray/tabularray.pdf
 % TColorbox: https://mirror.clientvps.com/CTAN/macros/latex/contrib/tcolorbox/tcolorbox.pdf
+% Posterbox Tutorial: https://mirror.clientvps.com/CTAN/macros/latex/contrib/tcolorbox/tcolorbox-tutorial-poster.pdf#[0,{%22name%22:%22Fit%22}]
 
 \documentclass[8pt]{extarticle}
 
@@ -39,7 +40,7 @@
 
 % --- TColorbox ---------------------------------------------------------------
 \usepackage{tcolorbox}
-\tcbuselibrary{skins,raster,listings,breakable,minted}
+\tcbuselibrary{skins,raster,listings,breakable,minted, poster}
 
 
 % --- Tables -------------------------------------------------------------------
@@ -134,9 +135,28 @@
             fontupper=\sffamily\bfseries\small,
             coltext=#1!10!black,
           },
-          IfValueT={#3}{watermark text={#3}},
-          #4
+        IfValueT={#3}{watermark text={#3}},
+        #4
     }
+
+% Posterbox environment for cheatsheet sections
+\NewDocumentEnvironment{cheatposterbox}{}
+    {
+        \begin{posterboxenv}[title=My title]{name=A,column=5,row=2, span=2, rowspan=3}
+    }
+    {
+        \end{posterboxenv}
+    }
+
+\NewDocumentEnvironment{mycustomenv}{ O{} m }% #1 optional, #2 mandatory
+{%
+  % Begin code: open posterboxenv with passed arguments
+  \begin{posterboxenv}[#1]{#2}%
+}%
+{%
+  % End code: close posterboxenv
+  \end{posterboxenv}%
+}
 
 % Colorbox environment for bash listings
 \newtcblisting{bashlisting}
@@ -165,6 +185,33 @@
     }
 
 
+\tcbsubskin{cheatboxorangeskin}{standard}{
+    size=title, 
+    left=0.2em,
+    right=0.2em,
+    arc=0.25mm,
+    colback=orange!2!white,
+    colframe=orange!75!black,
+    coltitle=orange!10!black,
+    colbacktitle=orange!75!white,
+    fonttitle=\sffamily\bfseries,
+    toptitle=0mm,
+    bottomtitle=0mm,
+    fontupper=\sffamily\small,
+    fontlower=\sffamily\small,
+    halign=left,
+    subtitle style={top=0.4mm, bottom=0mm, boxrule=0.2pt, boxsep=0.1mm,
+        colback=orange!50!orange!20!white,
+        colupper=orange!50!gray,
+        fontupper=\sffamily\bfseries\small,
+        coltext=orange!10!black,
+        height=1.1\baselineskip,
+      }, 
+}
+
+
+
+
     
 % ----------------------------------------------------------------------------------------------------------------------
 % Main Document
@@ -182,11 +229,33 @@
 \end{tcbraster}
 
 
+\begin{tcbposter}[
+        poster = {showframe,spacing=1em, columns=12},
+        boxes = {beamer,colframe=blue!50!black,colback=blue!50,colupper=yellow!50},
+    ]
+
+    \begin{posterboxenv}{name=B,column=1,row=1, span=2, rowspan=2}
+        My first box.
+    \end{posterboxenv}
+
+    % \begin{mycustomenv}[title=My title]{name=A,column=5,row=2, span=2, rowspan=3}
+    %     Content here.
+    % \end{mycustomenv}
+
+    % \begin{posterboxenv}[title=My title]{name=A,column=2,between=top and bottom}
+    % \begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=My nice heading]
+
+\end{tcbposter}
+
+\pagebreak
+
+
+
 % === Page 1: Main content ======================================================
 \begin{tcbraster}[raster columns=12]
 
     % --- Overview -------------------------------------------------------------
-    \begin{cheatbox}[orange]{Overview}[raster multicolumn=3]
+    \begin{tcolorbox}[skin=cheatboxorangeskin, title=Overview, raster multicolumn=3]
         Rust is a general-purpose programming language focused on performance, memory safety without garbage collector, and concurrency, using an ownership system preventing memory errors.
 
         \tcbsubtitle{\href{https://cheats.rs/\#hello-rust}{Strengths}}
@@ -201,11 +270,11 @@
         \begin{bashlisting}
             curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
         \end{bashlisting}
+    \end{tcolorbox}
 
-    \end{cheatbox}
 
     % --- Tools ----------------------------------------------------------------
-    \begin{cheatbox}[orange]{Tools}[raster multicolumn=3]
+    \begin{tcolorbox}[skin=cheatboxorangeskin, title=Tools, raster multicolumn=3]
 
         \tcbsubtitle{Rustup}
         {
@@ -215,15 +284,15 @@
                     size=minimal,
                     before skip=0.2\baselineskip,
                     after skip=0.2\baselineskip,
-                    colback=white, 
+                    colback=white,
                     colframe=red,
-                    frame empty, 
+                    frame empty,
                     tabularray={
-                        columns={halign=l, valign=t},
-                        column{1}={colsep=0pt},
-                        column{2}={15em, leftsep=1em, rightsep=0pt},
-                        rows={rowsep=0pt},
-                    }
+                            columns={halign=l, valign=t},
+                            column{1}={colsep=0pt},
+                            column{2}={15em, leftsep=1em, rightsep=0pt},
+                            rows={rowsep=0pt},
+                        }
                 ]
                 \texttt{rustup show}               & Show installed toolchains                             \\
                 \texttt{rustup update}             & Update all toolchains                                 \\
@@ -245,17 +314,17 @@
                     size=minimal,
                     before skip=0.2\baselineskip,
                     after skip=0.2\baselineskip,
-                    colback=white, 
+                    colback=white,
                     colframe=red,
-                    frame empty, 
+                    frame empty,
                     tabularray={
-                        % hline{2} = {0.5pt,solid},
-                        columns={halign=l, valign=t},
-                        column{1}={colsep=0pt},
-                        column{2}={leftsep=0.5em, rightsep=0pt},
-                        column{3}={17.75em, leftsep=0.5em, rightsep=0pt},
-                        rows={rowsep=0pt},
-                    }
+                            % hline{2} = {0.5pt,solid},
+                            columns={halign=l, valign=t},
+                            column{1}={colsep=0pt},
+                            column{2}={leftsep=0.5em, rightsep=0pt},
+                            column{3}={17.75em, leftsep=0.5em, rightsep=0pt},
+                            rows={rowsep=0pt},
+                        }
                 ]
                 \texttt{rustc}         & \textit{man} & The Rust compiler and \texttt{Rustdoc}                                                     \\
                 \texttt{cargo}         & \textit{man} & Package manager and build tool                                                             \\
@@ -280,16 +349,16 @@
                     size=minimal,
                     before skip=0.2\baselineskip,
                     after skip=0.2\baselineskip,
-                    colback=white, 
+                    colback=white,
                     colframe=red,
-                    frame empty, 
+                    frame empty,
                     tabularray={
-                        % hline{2} = {0.5pt,solid},
-                        columns={halign=l, valign=t},
-                        column{1}={colsep=0pt},
-                        column{2}={15em, leftsep=0.5em, rightsep=0pt},
-                        rows={rowsep=0pt},
-                    }
+                            % hline{2} = {0.5pt,solid},
+                            columns={halign=l, valign=t},
+                            column{1}={colsep=0pt},
+                            column{2}={15em, leftsep=0.5em, rightsep=0pt},
+                            rows={rowsep=0pt},
+                        }
                 ]
                 \texttt{cargo init}                & Create a new binary project                                   \\
                 \texttt{cargo init --lib}          & Create a new library project                                  \\
@@ -313,7 +382,7 @@
 
 
 
-    \end{cheatbox}
+    \end{tcolorbox}
 
 
 \end{tcbraster}

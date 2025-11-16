@@ -38,6 +38,7 @@
 *.pygtex
 *.pygstyle
 *.listing
+*tcbtemp
 
 # minted package output
 _minted-*
