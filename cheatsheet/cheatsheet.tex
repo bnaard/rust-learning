@@ -9,6 +9,8 @@
 % Posterbox Tutorial: https://mirror.clientvps.com/CTAN/macros/latex/contrib/tcolorbox/tcolorbox-tutorial-poster.pdf#[0,{%22name%22:%22Fit%22}]
 % Xcolor: https://mirror.clientvps.com/CTAN/macros/latex/contrib/xcolor/xcolor.pdf
 % TikZ: https://tikz.dev/
+% Geometry: https://ftp.gwdg.de/pub/ctan/macros/latex/contrib/geometry/geometry.pdf
+
 
 \documentclass[8pt]{extarticle}
 
@@ -32,7 +34,7 @@
 
 
 % --- Page layout --------------------------------------------------------------
-\usepackage[a4paper,landscape, right=2.5mm, left=2.5mm, top=2.5mm, bottom=2.5mm]{geometry}
+\usepackage[showframe, verbose, nomarginpar, a4paper,landscape, right=2.5mm, left=2.5mm, top=2.5mm, bottom=2.5mm]{geometry}
 
 % --- Listings -----------------------------------------------------------------
 
@@ -167,7 +169,7 @@
 }
 
 
-
+% Memory layout box command
 \NewDocumentCommand{\memorylayout}{O{red} m m !O{}}
 {
     \begin{tcboxedraster}
@@ -192,105 +194,15 @@
             before skip balanced=-0.9\baselineskip,
             width=#3,
             colback=gray!20!white,
-            colframe=gray
+            colframe=gray,
         }%
-            \foreach \x in {1,...,#2}%
+            \foreach \x in {#2}%
             {%
-                \begin{tcolorbox}[coltext=gray]\tiny\x\end{tcolorbox}%
+                \begin{tcolorbox}[coltext=gray, arc=1pt,outer arc=1pt]\tiny\x\end{tcolorbox}%
             }%
     \end{tcboxedraster}
 }
 
-% \NewDocumentCommand{\memorylayout}{O{red} m m !O{}}
-% {
-%     \begin{tcolorbox}
-%     [
-%         size=tight,
-%         nobeforeafter, 
-%         before skip balanced=-1\baselineskip,
-%         % top=0.2ex,
-%         % bottom=0.2ex,
-%         % left=0.02em,
-%         % right=0.02em,
-%         width=#3,
-%         arc=1pt,
-%         outer arc=1pt,
-%         coltext=black,
-%         colback=#1!10,
-%         colframe=#1!40!gray
-%     ]
-%     {
-%         \begin{tikzpicture}[start chain]
-%         % The chain is called just "chain"
-%         \node [on chain] {A};
-%         \node [on chain] {B};
-%         \node [on chain] {C};
-%         \end{tikzpicture}
-%     }
-%     \end{tcolorbox}
-% }
-
-
-% \tikzstyle{terminator} = [rectangle, draw, text centered, rounded corners, minimum height=2em]
-
-
-% {skin=spartan,size=tight,before skip=0pt,width=#3,arc=1pt,outer arc=1pt,colback=#1!10,colframe=#1!20!gray,fonttitle=\bfseries}
-
-
-% \NewDocumentCommand{\memorylayout}{O{red} m m !O{}}
-% {
-%     \begin{tcboxedraster}
-%     [
-%         size=minimal,
-%         colback=orange!60!white,
-%         colframe=orange!50!black,
-%         raster before skip=0pt, 
-%         raster after skip=0pt,
-%         raster column skip=0.2em,
-%         raster columns=#2, 
-%         raster width=#3, 
-%         raster height=6ex, 
-%         raster equal height,
-%         raster every box/.style=
-%             {
-%                 size=fbox,
-%                 colframe=red!50!black,
-%                 colback=red!10!white,
-%                 valign=center,
-%                 halign=center
-%             }
-%     ]
-%         \foreach \x in {1,...,#2}
-%         {
-%             \begin{tcolorbox}
-%                 \x
-%             \end{tcolorbox}
-%         }
-%     \end{tcboxedraster}
-% } 
-
-% \NewTotalTCBox[]{\memorylayout}{ O{red} m m !O{} }
-% {
-%     size=fbox,
-%     arc=0.2em,
-%     colback=orange!60!white,
-%     colframe=orange!50!black,
-%     on line,
-% }
-% {
-%      \begin{tcbraster}[size=minimal,raster before skip=0pt, raster after skip=0pt,raster column skip=0.2em,raster columns=#2, raster width=#3, raster height=6ex, raster equal height,
-%         raster every box/.style={size=fbox,colframe=red!50!black,colback=red!10!white,
-%             valign=center,halign=center}]
-        
-%         \foreach \x in {1,...,#2}{%
-%             \begin{tcolorbox}
-%                 \x
-%             \end{tcolorbox}
-%         }
-    
-%     \end{tcbraster}
-
-% }
 
 
     
@@ -300,29 +212,13 @@
 
 \begin{document}
 
-        \begin{tcolorbox}
-            [
-                % skin=cheatboxtablesimple,
-                tabularray={
-                        hline{1-Z} = {1pt,solid},
-                        % columns={halign=l, valign=m},
-                    }
-            ]
-            \texttt{bool}   clkw ecwecw pec weco woec woec woec woe         & 		\begin{tcolorbox}[skin=spartan,size=minimal,nobeforeafter,width=15em,coltext=black,colback=lightgray]This is a \textbf{tcolorbox}.\end{tcolorbox}   & Boolean \texttt{true} or \texttt{false} \\
-            \texttt{bool}   clkw ecwecw pec weco woec woec woec woe         & 		\begin{tcboxedraster}[raster columns=8,raster before skip=0pt,size=tight,raster column skip=1pt,raster left skip=1pt, raster right skip = 1pt,top=0.4ex,bottom=0.4ex,halign=center,colframe=gray!50!black,colback=gray!10!white,colbacktitle=gray!50!white]{skin=spartan,size=minimal,nobeforeafter,width=15em,coltext=black,colback=lightgray}\foreach \x in {1,...,8}{\begin{tcolorbox}[coltext=green!20!gray]\tiny\x\end{tcolorbox}}\end{tcboxedraster}   & Boolean \texttt{true} or \texttt{false} \\
-            \texttt{bool}   clkw ecwecw pec weco woec woec woec woe         & 		\memorylayout[green!70!white]{8}{9em}[]    & Boolean \texttt{true} or \texttt{false} \\
-        \end{tcolorbox}
-
-\memorylayout[green!70!white]{8}{9em}[]  
-
-
-\pagebreak
 
 % === Page 1 =================================================================
 
 \begin{tcbposter}[
         poster = {spacing=0.6em, columns=12},
         boxes = {},
+        coverage={left=0pt, right=0pt, top=0pt, bottom=0pt},
     ]
 
     % === Header ================================================================
@@ -352,10 +248,12 @@
     \end{posterboxenv}
 
 
-    % === Tools ================================================================
-    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Tools]
-        {name=tools,column=1,below=overview, span=3}
-        \tcbsubtitle{Rustup}
+    % === Tooling ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Tooling]
+        {name=tooling,column=1,below=overview, span=3}
+
+        % --- Rustup ----------------------------------------------------------------
+        \tcbsubtitle{\href{https://rust-lang.github.io/rustup/}{Rustup} \hfill \normalfont{\textit{ \tiny extract from full command list}}}
         {
             Install and manage Rust toolchains (compiler and tools).
             \begin{tcolorbox}
@@ -376,10 +274,10 @@
                 \texttt{rustup target list}        & List available compilation targets                    \\
                 \texttt{rustup target add T}       & Add a compilation target \texttt{T}                \\
                 \texttt{rustup docs}               & Open local Rust docs in browser \\
-                \texttt{rustup uninstall TC}       & Uninstall toolchain \texttt{TC}                       \\
             \end{tcolorbox}
         }
 
+        % --- Components -----------------------------------------------------------
         \tcbsubtitle{\href{https://rust-lang.github.io/rustup/concepts/components.html}{Components}}
         {
             Parts of toolchains, partly \textit{man}datory partly \textit{opt}ional.
@@ -388,7 +286,7 @@
                     skin=cheatboxtablesimple,
                     tabularray={
                             % hline{2} = {0.5pt,solid},
-                            columns={halign=l, valign=m},
+                            columns={halign=l, valign=t},
                             column{1}={colsep=0pt},
                             column{2}={leftsep=0.5em, rightsep=0pt},
                             column{3}={17.75em, leftsep=0.5em, rightsep=0pt},
@@ -410,9 +308,10 @@
             \end{tcolorbox}
         }
 
-        \tcbsubtitle{Cargo}
+        % --- Cargo -----------------------------------------------------------------
+        \tcbsubtitle{\href{https://doc.rust-lang.org/cargo/}{Cargo}\hfill \normalfont{\textit{ \tiny extract from full command list}}}
         {
-            Used to build and run Rust projects..
+            Used to build and run Rust projects.
             \begin{tcolorbox}
                 [
                     skin=cheatboxtablesimple,
@@ -446,32 +345,70 @@
     \end{posterboxenv}
 
 
+    % === Supported platforms ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Supported Platforms]
+        {name=supportedplatforms,column=4,below=headertitle, span=4}
+
+        \tcbsubtitle{\href{https://doc.rust-lang.org/nightly/rustc/platform-support.html}{Tier 1}}
+        \begin{tcolorbox}
+            [
+                skin=cheatboxtablesimple,
+                tabularray={
+                        % hline = {0.5pt,solid,lightgray},
+                        columns={halign=l, valign=m},
+                        column{1}={colsep=0pt},
+                        column{2}={22em, leftsep=0.3em, rightsep=0pt},
+                        rows={rowsep=0pt},
+                    }
+            ]
+            \texttt{aarch64-apple-darwin}         &   ARM64 macOS (11.0+, Big Sur+) \\
+            \texttt{aarch64-pc-windows-msvc}      &   ARM64 Windows MSVC \\
+            \texttt{aarch64-unknown-linux-gnu}    &   ARM64 Linux (kernel 4.1+, glibc 2.17+) \\
+            \texttt{i686-pc-windows-msvc}         &   32-bit MSVC (Windows 10+, Windows Server 2016+, Pentium 4) \\
+            \texttt{i686-unknown-linux-gnu}       &   32-bit Linux (kernel 3.2+, glibc 2.17+, Pentium 4) \\
+            \texttt{x86\_64-pc-windows-gnu}        &   64-bit MinGW (Windows 10+, Windows Server 2016+) \\
+            \texttt{x86\_64-pc-windows-msvc}       &   64-bit MSVC (Windows 10+, Windows Server 2016+) \\
+            \texttt{x86\_64-unknown-linux-gnu}     &   64-bit Linux (kernel 3.2+, glibc 2.17+) \\
+        \end{tcolorbox}
+    
+    \end{posterboxenv}
+
     % === Primitive Data Types ================================================================
     \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Primitive Data Types]
-        {name=primitives,column=4,below=headertitle, span=4}
+        {name=primitives,column=4,below=supportedplatforms, span=4}
 
         \tcbsubtitle{\href{https://cheats.rs/\#memory-layout}{Boolean and Fixed Point Numeric Types}}
         \begin{tcolorbox}
             [
                 skin=cheatboxtablesimple,
+                overlay={
+                    \path (0,0) node [font=\tiny, text=gray, anchor=west] at ([xshift=8mm,yshift=0cm]frame.north west) {memory layout, byte order depends on platform endianness.};
+                }, 
                 tabularray={
-                        hline{1-Z} = {1pt,solid},
+                        hline{2,4,6,8,10,12} = {0.5pt,solid,lightgray},
                         columns={halign=l, valign=m},
                         column{1}={colsep=0pt},
-                        column{2}={leftsep=0.1em, rightsep=0pt},
-                        column{3}={15em, leftsep=0.3em, rightsep=0pt},
+                        column{2}={leftsep=0.7em, rightsep=0pt},
+                        column{3}={22em, leftsep=0.3em, rightsep=0pt},
                         rows={rowsep=0pt},
                     }
             ]
-            \texttt{bool}           & 		\memorylayout[gray!70!white]{1}{9em}[]   & Boolean \texttt{true} or \texttt{false} \\
-            \texttt{u8,i8}          & 		\memorylayout[green!70!white]{1}{9em}[]   & \texttt{0..255}, \texttt{-128..127} \\
-            \texttt{u16,i16}        & 		\memorylayout[green!70!white]{2}{9em}[]   & \texttt{0..65535}, \texttt{-32768..32767} \\
-            \texttt{u32,i32}        & 		\memorylayout[green!70!white]{4}{9em}[]   & \texttt{0..4294967295}, \texttt{-2147483648..2147483647} \\
-            \texttt{u64,i64}        & 		\memorylayout[green!70!white]{8}{9em}[]   & \texttt{0..18446744073709551615}, \tiny{\texttt{-9223372036854775808.. 9223372036854775807}} \\
-            \texttt{u128,i128}      & 		\memorylayout[green!70!white]{16}{9em}[]   & \tiny{\texttt{0..340282366920938463463374607431768211455} \texttt{-170141183460469231731687303715884105728.. 170141183460469231731687303715884105727}} \\
-            \texttt{usize,isize}    & 		X   & Same as \texttt{ptr} on platform.  \\
+            \texttt{bool}             & 		\memorylayout[gray!70!white]{1}{9em}[]                      & Boolean \texttt{true} or \texttt{false} \\
+            \texttt{u8}               & 		\SetCell[r=2]{l}\memorylayout[green!70!white]{1}{9em}[]     & \texttt{0..255}  \\
+            \texttt{i8}               & 		                                                            & \texttt{-128..127} \\
+            \texttt{u16}              & 		\SetCell[r=2]{l}\memorylayout[green!70!white]{1,2}{9em}[]   & \texttt{0..65\_535} \\
+            \texttt{i16}              & 		                                                            & \texttt{-32\_768..32\_767} \\
+            \texttt{u32}              & 		\SetCell[r=2]{l}\memorylayout[green!70!white]{1,...,4}{9em}[] & \texttt{0..4\_294\_967\_295} \\
+            \texttt{i32}              & 		                                                            & \texttt{-2\_147\_483\_648..2\_147\_483\_647} \\
+            \texttt{u64}              & 		\SetCell[r=2]{l}\memorylayout[green!70!white]{1,...,8}{9em}[] & \texttt{0..18\_446\_744\_073\_709\_551\_615} \\
+            \texttt{i64}              & 		                                                            & \tiny{\texttt{-9\_223\_372\_036\_854\_775\_808..9\_223\_372\_036\_854\_775\_807}} \\
+            \texttt{u128}             & 		\SetCell[r=2]{l}\memorylayout[green!70!white]{1,2,3,4,..,14,15,16}{9em}[] & \tiny{\texttt{0..340\_282\_366\_920\_938\_463\_463\_374\_607\_431\_768\_211\_455}}  \\
+            \texttt{i128}             & 		                                                            & \tiny{\texttt{-170\_141\_183\_460\_469\_231\_731\_687\_303\_715\_884\_105\_728.. 170\_141\_183\_460\_469\_231\_731\_687\_303\_715\_884\_105\_727}} \\
+            \texttt{usize}            & 		\SetCell[r=2]{l}\memorylayout[green!70!white]{1,2,3,4,..}{9em}[] & \SetCell[r=2]{l}Same as \texttt{ptr} on platform, ie. \texttt{u16}, \texttt{u32}, \texttt{u64} or \texttt{i16}, \texttt{i32}, \texttt{i64}  \\
+            \texttt{isize}            & 		                                                            &  \\
         \end{tcolorbox}
 
+        % --- Floating Point Types ------------------------------------------------------
         \tcbsubtitle{\href{https://cheats.rs/\#memory-layout}{Floating Point Numeric Types}}
         \begin{tcolorbox}
             [
@@ -486,10 +423,125 @@
                     }
             ]
             \texttt{f16}            & 		\memorylayout[magenta!70!white]{2}{8em}[]  & 16-bit floating point \\
+            \texttt{f32}            & 		\memorylayout[magenta!70!white]{2}{8em}[]  & 32-bit floating point \\
+            \texttt{f64}            & 		\memorylayout[magenta!70!white]{2}{8em}[]  & 64-bit floating point \\
+            \texttt{f128}            & 		\memorylayout[magenta!70!white]{2}{8em}[]  & 128-bit floating point \\
+        \end{tcolorbox}
+
+
+        % --- Character/String Types ------------------------------------------------------
+        \tcbsubtitle{\href{https://cheats.rs/\#memory-layout}{Character/String Types}}
+        \begin{tcolorbox}
+            [
+                skin=cheatboxtablesimple,
+                tabularray={
+                        % hline{1-Z} = {1pt,solid},
+                        columns={halign=l, valign=m},
+                        column{1}={colsep=0pt},
+                        column{2}={leftsep=0.5em, rightsep=0pt},
+                        column{3}={15em, leftsep=1em, rightsep=0pt},
+                        rows={rowsep=0pt},
+                    }
+            ]
+            \texttt{char}            & 		\memorylayout[cyan!70!white]{4}{8em}[]  & 32-bit Unicode scalar value \\
+            \texttt{str}            & 		\memorylayout[cyan!70!white]{2}{8em}[]  & UTF-8 encoded string slice \\
+            \texttt{String}            & 		\memorylayout[cyan!70!white]{3}{8em}[]  & Growable UTF-8 encoded string \\
+        \end{tcolorbox}
+
+
+        % --- Standard Library Types ------------------------------------------------------
+        \tcbsubtitle{\href{https://cheats.rs/\#memory-layout}{Standard Library Types}}
+        \begin{tcolorbox}
+            [
+                skin=cheatboxtablesimple,
+                tabularray={
+                        % hline{1-Z} = {1pt,solid},
+                        columns={halign=l, valign=m},
+                        column{1}={colsep=0pt},
+                        column{2}={leftsep=0.5em, rightsep=0pt},
+                        column{3}={15em, leftsep=1em, rightsep=0pt},
+                        rows={rowsep=0pt},
+                    }
+            ]
+            \texttt{vector...}            & 		\memorylayout[cyan!70!white]{4}{8em}[]  & 32-bit Unicode scalar value \\
+        \end{tcolorbox}
+
+
+
+    \end{posterboxenv}
+
+
+    % === Flow Control ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Flow Control]
+        {name=flowcontrol,column=8,below=headertitle, span=3}
+
+        \tcbsubtitle{\href{https://cheats.rs/\#memory-layout}{Flow Control}}
+        \begin{tcolorbox}
+            [
+                skin=cheatboxtablesimple,
+                placeholder,
+            ]
         \end{tcolorbox}
 
     \end{posterboxenv}
 
+
+    % === Printing and Formatting ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Printing and Formatting]
+        {name=printingformatting,column=8,below=flowcontrol, span=3}
+
+        \tcbsubtitle{\href{https://cheats.rs/\#memory-layout}{Printing and Formatting}}
+        \begin{tcolorbox}
+            [
+                skin=cheatboxtablesimple,
+                placeholder,
+            ]
+        \end{tcolorbox}
+
+    \end{posterboxenv}
+
+    % === Operators ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Operators]
+        {name=operators,column=11,below=headertitle, span=2}
+
+        \tcbsubtitle{{Operators}}
+        \begin{tcolorbox}
+            [
+                skin=cheatboxtablesimple,
+                placeholder,
+            ]
+        \end{tcolorbox}
+
+    \end{posterboxenv}
+
+    % === Functions ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Functions]
+        {name=functions,column=11,below=operators, span=2}
+
+        \tcbsubtitle{{Functions}}
+        \begin{tcolorbox}
+            [
+                skin=cheatboxtablesimple,
+                placeholder,
+            ]
+        \end{tcolorbox}
+
+    \end{posterboxenv}
+
+
+    % === Comments ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Comments]
+        {name=comments,column=11,below=functions, span=2}
+
+        \tcbsubtitle{\href{https://cheats.rs/\#comments}{Comments}}
+        \begin{tcolorbox}
+            [
+                skin=cheatboxtablesimple,
+                placeholder,
+            ]
+        \end{tcolorbox}
+
+    \end{posterboxenv}
 
 
 \end{tcbposter}
