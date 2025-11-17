@@ -28,7 +28,7 @@ jobs:
           latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode -shell-escape %O %S" cheatsheet.tex
 
       - name: Upload PDF artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cheatsheet-pdf
           path: cheatsheet/cheatsheet.pdf
