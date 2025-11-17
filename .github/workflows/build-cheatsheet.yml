@@ -1,0 +1,34 @@
+name: Build cheatsheet
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build PDF (container)
+    runs-on: ubuntu-latest
+    container:
+      image: texlive/texlive:latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install missing tools inside container
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends latexmk python3-pygments inkscape
+
+      - name: Build cheatsheet PDF
+        working-directory: ./cheatsheet
+        run: |
+          # Run latexmk with shell-escape (required for minted and svg conversion)
+          latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode -shell-escape %O %S" cheatsheet.tex
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: cheatsheet-pdf
+          path: cheatsheet/cheatsheet.pdf
