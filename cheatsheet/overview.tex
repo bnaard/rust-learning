@@ -1,0 +1,415 @@
+\begin{tcbposter}[
+        poster = {spacing=0.6em, columns=12},
+        boxes = {},
+        coverage={left=0pt, right=0pt, top=0pt, bottom=0pt},
+    ]
+
+    % === Header ================================================================
+    \begin{posterboxenv}[skin=headerboxskin]
+        {name=headertitle, span=3, below=top}
+        \LARGE\raisebox{-0.1\height}{\includesvg[height=0.8\baselineskip]{logos/rust-logo-blk}}~{\rustfont RUST} \textcolor{orange}{for beginners}
+    \end{posterboxenv}
+
+
+    % === Overview ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Overview]
+        {name=overview,column=1,below=headertitle, span=3}
+        Rust is a general-purpose programming language focused on performance, memory safety without garbage collector, and concurrency, using an ownership system preventing memory errors.
+
+        \tcbsubtitle{\href{https://cheats.rs/\#hello-rust}{Strengths}}
+        \begin{itemize}[nosep,leftmargin=1.5em]
+            \item Compiled code about same performance as C / C++, and excellent memory and energy efficiency.
+            \item Can avoid 70\% of all safety issues present in C / C++, and most memory issues.
+            \item Strong type system prevents data races, brings 'fearless concurrency' (amongst others).
+            \item Seamless C interop, dozens of supported platforms (LLVM).
+        \end{itemize}
+
+        \tcbsubtitle{\href{https://rustup.rs/}{Installation}}
+        \begin{tcblisting}{skin=mintedbash}
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+        \end{tcblisting}
+
+    \end{posterboxenv}
+
+
+    % === Tooling ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Tooling]
+        {name=tooling,column=1,below=overview, span=3}
+
+        % --- Rustup ----------------------------------------------------------------
+        \tcbsubtitle{\href{https://rust-lang.github.io/rustup/}{Rustup} \hfill \normalfont{\textit{ \tiny extract from full command list}}}
+        {
+            Install and manage Rust toolchains (compiler and tools).
+            \begin{tcolorbox}
+                [
+                    skin=cheatboxtablesimple,
+                    tabularray={
+                            columns={halign=l, valign=m},
+                            column{1}={colsep=0pt},
+                            column{2}={15em, leftsep=1em, rightsep=0pt},
+                            rows={rowsep=0pt},
+                        }
+                ]
+                \texttt{rustup show}               & Show installed toolchains                             \\
+                \texttt{rustup update}             & Update all toolchains                                 \\
+                \texttt{rustup default TC}         & Set the default toolchain to \texttt{TC}              \\
+                \texttt{rustup component list}     & List available components                             \\
+                \texttt{rustup component add C}    & Add component \texttt{C}                           \\
+                \texttt{rustup target list}        & List available compilation targets                    \\
+                \texttt{rustup target add T}       & Add a compilation target \texttt{T}                \\
+                \texttt{rustup docs}               & Open local Rust docs in browser \\
+            \end{tcolorbox}
+        }
+
+        % --- Components -----------------------------------------------------------
+        \tcbsubtitle{\href{https://rust-lang.github.io/rustup/concepts/components.html}{Components}}
+        {
+            Parts of toolchains, partly \textit{man}datory partly \textit{opt}ional.
+            \begin{tcolorbox}
+                [
+                    skin=cheatboxtablesimple,
+                    tabularray={
+                            % hline{2} = {0.5pt,solid},
+                            columns={halign=l, valign=m},
+                            column{1}={colsep=0pt},
+                            column{2}={leftsep=0.5em, rightsep=0pt},
+                            column{3}={17.75em, leftsep=0.5em, rightsep=0pt},
+                            rows={rowsep=0pt},
+                        }
+                ]
+                \texttt{rustc}         & \textit{man} & The Rust compiler and \texttt{Rustdoc}                                                     \\
+                \texttt{cargo}         & \textit{man} & Package manager and build tool                                                             \\
+                \texttt{rustfmt}       & \textit{opt} & Code formatter                                                                             \\
+                \texttt{rust-std}      & \textit{man} & Rust standard library for each target                                                \\
+                \texttt{rust-docs}     & \textit{opt} & Local copy of the Rust documentation                                                       \\
+                \texttt{rust-analyzer} & \textit{opt} & Language server for editors and IDEs                                                       \\
+                \texttt{clippy}        & \textit{opt} & Lint tool providing extra checks for common mistakes and stylistic choices                 \\
+                \texttt{miri}          & \textit{opt} & Experimental Rust interpreter                                                              \\
+                \texttt{rust-src}      & \textit{opt} & Local copy of standard library source                                                      \\
+                \texttt{rust-mingw}    & \textit{opt} & Linker and platform libraries for building on \textit{x86\_64-pc-windows-gnu}  \\
+                \texttt{llvm-tools}    & \textit{opt} & Collection of LLVM tools. Unstable                                                         \\
+                \texttt{rustc-dev}     & \textit{opt} & Compiler as a library, only needed for development of tools linking to compiler      \\
+            \end{tcolorbox}
+        }
+
+        % --- Cargo -----------------------------------------------------------------
+        \tcbsubtitle{\href{https://doc.rust-lang.org/cargo/}{Cargo}\hfill \normalfont{\textit{ \tiny extract from full command list}}}
+        {
+            Used to build and run Rust projects.
+            \begin{tcolorbox}
+                [
+                    skin=cheatboxtablesimple,
+                    tabularray={
+                            % hline{2} = {0.5pt,solid},
+                            columns={halign=l, valign=m},
+                            column{1}={colsep=0pt},
+                            column{2}={15em, leftsep=0.5em, rightsep=0pt},
+                            rows={rowsep=0pt},
+                        }
+                ]
+                \texttt{cargo init}                & Create a new binary project                                   \\
+                \texttt{cargo init --lib}          & Create a new library project                                  \\
+                \texttt{cargo check}               & Check code for errors                                         \\
+                \texttt{cargo clippy}              & Lint code                                                     \\
+                \texttt{cargo doc}                 & Generate project documentation                                        \\
+                \texttt{cargo run}                 & Run the project                                               \\
+                \texttt{cargo run --bin NAME}      & Run a specific project binary                                 \\
+                \texttt{cargo build}               & Build everything in debug mode                                \\
+                \texttt{cargo build --bin NAME}    & Build binary \texttt{NAME} in debug mode                               \\
+                \texttt{cargo build --release}     & Build everything in release mode                              \\
+                \texttt{cargo build --target NAME} & Build for a specific target \texttt{NAME}                                  \\
+                \texttt{cargo --explain CODE}      & Details on compiler error \texttt{CODE}                                \\
+                \texttt{cargo test}                & Run all tests                                                 \\
+                \texttt{cargo test TEST\_NAME}     & Run a specific test \texttt{TEST\_NAME}                                          \\
+                \texttt{cargo test --doc}          & Run doctests only                                             \\
+                \texttt{cargo bench}               & Run benchmarks
+            \end{tcolorbox}
+        }
+
+    \end{posterboxenv}
+
+
+    % === Supported platforms ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Supported Platforms]
+        {name=supportedplatforms,column=4,below=headertitle, span=4}
+
+        % --- Tier 1 ----------------------------------------------------------------
+        \tcbsubtitle{\href{https://doc.rust-lang.org/nightly/rustc/platform-support.html}{Tier 1}\hfill \normalfont{\textit{ \tiny official Rust project support with full testing, full std-lib}}}
+        \begin{tcolorbox}
+            [
+                skin=cheatboxtablesimple,
+                tabularray={
+                        % hline{even} = {0.5pt,solid,lightgray},
+                        columns={halign=l, valign=m},
+                        column{1}={colsep=0pt},
+                        column{2}={25.4em, leftsep=0.3em, rightsep=0pt},
+                        rows={rowsep=0pt},
+                    }
+            ]
+            \texttt{aarch64-apple-darwin}         &   ARM64 macOS \footnotesize{(11.0+, Big Sur+)} \\
+            \texttt{aarch64-pc-windows-msvc}      &   ARM64 Windows MSVC \\
+            \texttt{aarch64-unknown-linux-gnu}    &   ARM64 Linux \footnotesize{(kernel 4.1+, glibc 2.17+)} \\
+            \texttt{i686-pc-windows-msvc}         &   32-bit MSVC \footnotesize{(Windows 10+, Windows Server 2016+, Pent 4)} \\
+            \texttt{i686-unknown-linux-gnu}       &   32-bit Linux \footnotesize{(kernel 3.2+, glibc 2.17+, Pentium 4)} \\
+            \texttt{x86\_64-pc-windows-gnu}        &   64-bit MinGW \footnotesize{(Windows 10+, Windows Server 2016+)} \\
+            \texttt{x86\_64-pc-windows-msvc}       &   64-bit MSVC \footnotesize{(Windows 10+, Windows Server 2016+)} \\
+            \texttt{x86\_64-unknown-linux-gnu}     &   64-bit Linux \footnotesize{(kernel 3.2+, glibc 2.17+)} \\
+        \end{tcolorbox}
+    
+        % --- Tier 2 ----------------------------------------------------------------
+        \tcbsubtitle{\href{https://doc.rust-lang.org/nightly/rustc/platform-support.html}{Tier 2}\hfill \normalfont{\textit{ \tiny extract, official Rust project support with less testing, full std-lib}}}
+        \footnotesize{%
+            \textbf{With host tools:} %
+            ARM64 MinGW (Windows 10+), %
+            PowerPC Linux (kernel 3.2+, glibc 2.17), %
+            RISC-V Linux (kernel 4.20+, glibc 2.29), %
+            S390x Linux (kernel 3.2+, glibc 2.17), %
+            NetBSD/amd64, %
+            64-bit x86 Solaris 11.4 %
+            \textbf{Using cross-compilation:} %
+            ARM64 iOS, %
+            ARM64 Android, %
+            WebAssembly %
+        }
+
+    \end{posterboxenv}
+
+    % === Primitive Data Types ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Primitive Data Types]
+        {name=primitives,column=4,below=supportedplatforms, span=4}
+
+        \tcbsubtitle{\href{https://cheats.rs/\#memory-layout}{Boolean and Fixed Point Numeric Types}}
+        \begin{tcolorbox}
+            [
+                skin=cheatboxtablesimple,
+                overlay={
+                    \path (0,0) node [font=\tiny, text=gray, anchor=west] at ([xshift=8mm,yshift=0cm]frame.north west) {memory layout, byte order depends on platform endianness.};
+                }, 
+                tabularray={
+                        hline{2,4,6,8,10,12} = {0.5pt,solid,lightgray},
+                        columns={halign=l, valign=m},
+                        column{1}={colsep=0pt},
+                        column{2}={leftsep=0.7em, rightsep=0pt},
+                        column{3}={22em, leftsep=0.3em, rightsep=0pt},
+                        rows={rowsep=0pt},
+                    }
+            ]
+            \texttt{bool}             & 		\memorylayout[gray!70!white]{1}{9em}[]                      & Boolean \texttt{true} or \texttt{false} \\
+            \texttt{u8}               & 		\SetCell[r=2]{l}\memorylayout[green!70!white]{1}{9em}[]     & \texttt{0..255}  \\
+            \texttt{i8}               & 		                                                            & \texttt{-128..127} \\
+            \texttt{u16}              & 		\SetCell[r=2]{l}\memorylayout[green!70!white]{1,2}{9em}[]   & \texttt{0..65\_535} \\
+            \texttt{i16}              & 		                                                            & \texttt{-32\_768..32\_767} \\
+            \texttt{u32}              & 		\SetCell[r=2]{l}\memorylayout[green!70!white]{1,...,4}{9em}[] & \texttt{0..4\_294\_967\_295} \\
+            \texttt{i32}              & 		                                                            & \texttt{-2\_147\_483\_648..2\_147\_483\_647} \\
+            \texttt{u64}              & 		\SetCell[r=2]{l}\memorylayout[green!70!white]{1,...,8}{9em}[] & \texttt{0..18\_446\_744\_073\_709\_551\_615} \\
+            \texttt{i64}              & 		                                                            & \tiny{\texttt{-9\_223\_372\_036\_854\_775\_808..9\_223\_372\_036\_854\_775\_807}} \\
+            \texttt{u128}             & 		\SetCell[r=2]{l}\memorylayout[green!70!white]{1,2,3,4,..,14,15,16}{9em}[] & \tiny{\texttt{0..340\_282\_366\_920\_938\_463\_463\_374\_607\_431\_768\_211\_455}}  \\
+            \texttt{i128}             & 		                                                            & \tiny{\texttt{-170\_141\_183\_460\_469\_231\_731\_687\_303\_715\_884\_105\_728.. 170\_141\_183\_460\_469\_231\_731\_687\_303\_715\_884\_105\_727}} \\
+            \texttt{usize}            & 		\SetCell[r=2]{l}\memorylayout[green!70!white]{1,2,3,4,..}{9em}[] & \SetCell[r=2]{l}Same as \texttt{ptr} on platform, ie. \texttt{u16}, \texttt{u32}, \texttt{u64} or \texttt{i16}, \texttt{i32}, \texttt{i64}  \\
+            \texttt{isize}            & 		                                                            &  \\
+        \end{tcolorbox}
+
+        % --- Floating Point Types ------------------------------------------------------
+        \tcbsubtitle{\href{https://cheats.rs/\#memory-layout}{Floating Point Numeric Types}}
+        \begin{tcolorbox}
+            [
+                skin=cheatboxtablesimple,
+                tabularray={
+                        % hline{1-Z} = {1pt,solid},
+                        columns={halign=l, valign=m},
+                        column{1}={colsep=0pt},
+                        column{2}={leftsep=0.5em, rightsep=0pt},
+                        column{3}={15em, leftsep=1em, rightsep=0pt},
+                        rows={rowsep=0pt},
+                    }
+            ]
+            \texttt{f16}            & 		\memorylayout[magenta!70!white]{2}{8em}[]  & 16-bit floating point \\
+            \texttt{f32}            & 		\memorylayout[magenta!70!white]{2}{8em}[]  & 32-bit floating point \\
+            \texttt{f64}            & 		\memorylayout[magenta!70!white]{2}{8em}[]  & 64-bit floating point \\
+            \texttt{f128}            & 		\memorylayout[magenta!70!white]{2}{8em}[]  & 128-bit floating point \\
+        \end{tcolorbox}
+
+
+        % --- Character/String Types ------------------------------------------------------
+        \tcbsubtitle{\href{https://cheats.rs/\#memory-layout}{Character/String Types}}
+        \begin{tcolorbox}
+            [
+                skin=cheatboxtablesimple,
+                tabularray={
+                        % hline{1-Z} = {1pt,solid},
+                        columns={halign=l, valign=m},
+                        column{1}={colsep=0pt},
+                        column{2}={leftsep=0.5em, rightsep=0pt},
+                        column{3}={15em, leftsep=1em, rightsep=0pt},
+                        rows={rowsep=0pt},
+                    }
+            ]
+            \texttt{char}            & 		\memorylayout[cyan!70!white]{4}{8em}[]  & 32-bit Unicode scalar value \\
+            \texttt{str}            & 		\memorylayout[cyan!70!white]{2}{8em}[]  & UTF-8 encoded string slice \\
+            \texttt{String}            & 		\memorylayout[cyan!70!white]{3}{8em}[]  & Growable UTF-8 encoded string \\
+        \end{tcolorbox}
+
+
+        % --- Standard Library Types ------------------------------------------------------
+        \tcbsubtitle{\href{https://cheats.rs/\#memory-layout}{Standard Library Types}}
+        \begin{tcolorbox}
+            [
+                skin=cheatboxtablesimple,
+                tabularray={
+                        % hline{1-Z} = {1pt,solid},
+                        columns={halign=l, valign=m},
+                        column{1}={colsep=0pt},
+                        column{2}={leftsep=0.5em, rightsep=0pt},
+                        column{3}={15em, leftsep=1em, rightsep=0pt},
+                        rows={rowsep=0pt},
+                    }
+            ]
+            \texttt{vector...}            & 		\memorylayout[cyan!70!white]{4}{8em}[]  & 32-bit Unicode scalar value \\
+        \end{tcolorbox}
+
+
+
+    \end{posterboxenv}
+
+
+    % === Flow Control ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Flow Control]
+        {name=flowcontrol,column=10,below=headertitle, span=3}
+
+        \tcbsubtitle{\href{https://cheats.rs/\#memory-layout}{Flow Control}}
+        \begin{tcolorbox}
+            [
+                skin=cheatboxtablesimple,
+                placeholder,
+            ]
+        \end{tcolorbox}
+
+    \end{posterboxenv}
+
+
+    % === Printing and Formatting ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Printing and Formatting]
+        {name=printingformatting,column=10,below=flowcontrol, span=3}
+
+        \tcbsubtitle{\href{https://cheats.rs/\#memory-layout}{Printing and Formatting}}
+        \begin{tcolorbox}
+            [
+                skin=cheatboxtablesimple,
+                placeholder,
+            ]
+        \end{tcolorbox}
+
+    \end{posterboxenv}
+
+    % === Functions ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Functions]
+        {name=functions,column=10,below=printingformatting, span=3}
+
+        \tcbsubtitle{{Functions}}
+        \begin{tcolorbox}
+            [
+                placeholder,
+            ]
+        \end{tcolorbox}
+
+    \end{posterboxenv}
+
+
+    % === Operators ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Operators]
+        {name=operators,column=8,below=headertitle, span=2}
+
+        \tcbsubtitle{{Arithmetic}}
+        \begin{tcblisting}{skin=mintedrust}
+            let (x, y) = (2, 3);
+            let sum: i16 = x + y; // => 5
+            let subtraction: i16 = x - y; // => -1
+            let multiplication: i16 = x * y; // => 6
+            let division: i16 = x / y; // => 0
+            let modulus: i16 = x % y; // => 2
+        \end{tcblisting}
+
+        \tcbsubtitle{{Bitwise}}
+        \begin{tcblisting}{skin=mintedrust}
+            let (a, b) = (0x4, 0xF); // 0b0100, 0b1111
+            let bitwise_and = a & b; // => 4 (0b0100)
+            let bitwise_or = a | b; // => 15 (0b1111)
+            let bitwise_xor = a ^ b; // => 11 (0b1011)
+            let right_shift = a >> 2; // => 1 (0b0001)
+            let left_shift = b << 4; // => 240 (0b11110000)
+        \end{tcblisting}
+
+        \tcbsubtitle{{Assignment}}
+        \begin{tcblisting}{skin=mintedrust}
+            let (k, l) = (0x1, 0x2);
+            k += l; // k = k + l => 3
+            k -= l; // k = k - l => 1
+            k *= l; // k = k * l => 2
+            k /= l; // k = k / l => 1
+            k %= l; // k = k % l => 1
+            k &= l; // k = k & l => 0
+            k |= l; // k = k | l => 2
+            k ^= l; // k = k ^ l => 0
+            k >>= 1; // k = k >> 1 => 0
+            k <<= 1; // k = k << 1 => 0
+        \end{tcblisting}
+
+        \tcbsubtitle{{Comparison}}
+        \begin{tcblisting}{skin=mintedrust}
+            let (e, f) = (1, 100);
+
+            let greater = f > e;        // => true
+            let less = f < e;           // => false
+            let greater_equal = f >= e; // => true
+            let less_equal = e <= f;    // => true
+            let equal_to = e == f;      // => false
+            let not_equal_to = e != f;  // => true
+        \end{tcblisting}
+
+        \tcbsubtitle{{Logical}}
+        \begin{tcblisting}{skin=mintedrust}
+            let (c, d) = (true, false);
+
+            let and = c && d;  // => false
+            let or  = c || d;  // => true
+            let not = !c;      // => false
+        \end{tcblisting}
+
+
+    \end{posterboxenv}
+
+
+
+    % === Comments ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title={\href{https://doc.rust-lang.org/rust-by-example/meta/doc.html}{Documentation}}]
+        {name=comments,column=8,below=operators, span=2}
+        
+        Comments are parsed in markdown.%
+        % \vspace{-2pt}
+        \begin{tcblisting}{skin=mintedrust}
+            // Line comments **bold** 
+            /* ... Block comments */
+        \end{tcblisting}
+        \textit{Outer Documentation Comments:} Document following item (eg. function).
+        \begin{tcblisting}{skin=mintedrust}
+            /// Outer doc line comments
+            /** ... Outer doc block comment */  
+        \end{tcblisting}
+        \textit{Inner Documentation Comments:} Document the enclosing item (eg. module).
+        \begin{tcblisting}{skin=mintedrust}
+            //! Inner doc line comments
+            /*! ... Inner doc block comment */
+        \end{tcblisting}
+        \textit{Example code} in docs is tested with `cargo test` (only for library crates)
+        \begin{tcblisting}{skin=mintedrust}
+            /// ```rust
+            /// fn foo() -> i32 { 
+            ///     1 + 1   // in-example comment
+            /// }
+            /// ``` 
+        \end{tcblisting}
+
+    \end{posterboxenv}
+
+
+\end{tcbposter}

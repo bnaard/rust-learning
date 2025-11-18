@@ -17,25 +17,26 @@
                 "-synctex=1",
                 "-interaction=nonstopmode",
                 "-file-line-error",
+                "-pdflatex=lualatex",
                 "-pdf",
-                "-aux-directory=out",
-                "-output-directory=out",
+                "-aux-directory=%OUTDIR%",
+                "-output-directory=%OUTDIR%",
                 "%DOC%"
             ]
         },
-        {
-            "name": "pdflatex",
-            "command": "pdflatex",
-            "args": [
-                "--shell-escape", // added arg to default
-                "-synctex=1",
-                "-interaction=nonstopmode",
-                "-file-line-error",
-                "-aux-directory=out",
-                "-output-directory=out",
-                "%DOC%"
-            ]
-        }
+        // {
+        //     "name": "pdflatex",
+        //     "command": "pdflatex",
+        //     "args": [
+        //         "--shell-escape", // added arg to default
+        //         "-synctex=1",
+        //         "-interaction=nonstopmode",
+        //         "-file-line-error",
+        //         "-aux-directory=%OUTDIR%",
+        //         "-output-directory=%OUTDIR%",
+        //         "%DOC%"
+        //     ]
+        // }
     ],
     "latex-workshop.formatting.latex": "latexindent",
     // "editor.formatOnSave": true,
