@@ -25,7 +25,8 @@ jobs:
         working-directory: ./cheatsheet
         run: |
           # Run latexmk with shell-escape (required for minted and svg conversion)
-          latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode -shell-escape %O %S" cheatsheet.tex
+          # Use LuaLaTeX as the engine so fontspec and system fonts work correctly
+          latexmk -pdf -pdflatex="lualatex -interaction=nonstopmode -shell-escape %O %S" cheatsheet.tex
 
       - name: Upload PDF artifact
         uses: actions/upload-artifact@v4
