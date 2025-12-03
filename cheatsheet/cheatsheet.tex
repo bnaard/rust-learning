@@ -1,5 +1,5 @@
 % ----------------------------------------------------------------------------------------------------------------------
-% RUST cheat sheet - Released under the MIT License
+% Math Learning Cards for AI - Released under the MIT License
 % ----------------------------------------------------------------------------------------------------------------------
 
 % User guides
@@ -11,12 +11,20 @@
 % TikZ: https://tikz.dev/
 % Geometry: https://ftp.gwdg.de/pub/ctan/macros/latex/contrib/geometry/geometry.pdf
 % fontspec: https://texdoc.org/serve/fontspec/0
+% fancyhdr: https://ftp.fau.de/ctan/macros/latex/contrib/fancyhdr/fancyhdr.pdf
+% biblatex: https://distrib-coffee.ipsl.jussieu.fr/pub/mirrors/ctan/macros/latex/contrib/biblatex/doc/biblatex.pdf
+% amsmath: https://www.latex-project.org/help/documentation/amsldoc.pdf
 
 % Sources
 % https://cheats.rs/
 % https://www.chiark.greenend.org.uk/~ianmdlvl/rust-polyglot/syntax.html
 % https://quickref.me/rust.html
 % https://zerotomastery.io/cheatsheets/rust-cheat-sheet/
+
+% Rust Book: https://doc.rust-lang.org/stable/book/title-page.html
+% Rust by Example: https://doc.rust-lang.org/rust-by-example/index.html
+% Rust Language Reference: https://doc.rust-lang.org/reference/introduction.html
+% ----------------------------------------------------------------------------------------------------------------------
 
 
 \documentclass[8pt]{extarticle}
@@ -32,10 +40,20 @@
 
 % Load system fonts via fontspec (requires XeLaTeX or LuaLaTeX)
 % to get a list of installed fonts: luaotfload-tool --list=format 
+% show all fonts: luafindfont -n "*"
+% show font details: luaotfload-tool --find="FiraMono" -i
 \usepackage{fontspec}
 \setmainfont{FreeSans}[Scale=0.95]
 \setsansfont{FreeSans}[Scale=0.95]
-\setmonofont{FreeMono}[Scale=0.85]
+% \setmonofont{FreeMono}[Scale=0.85]
+% \setmonofont{firamono}[
+% \usepackage{sourcecodepro}
+\setmonofont{Source Code Pro}[
+  Contextuals=Alternate,
+  Scale=0.80 
+]
+% \setmonofont{inconsolatalgcnerdfontmono}[Scale=0.85]
+% \renewcommand{\ttdefault}{Source Code Pro}
 
 % font for the word "RUST" in the header
 \newfontfamily\rustfont{AlphaSlabOne} 
@@ -43,14 +61,35 @@
 % Emoji support
 \usepackage{emoji}
 
+
 % --- Page layout --------------------------------------------------------------
-\usepackage[showframe, verbose, nomarginpar, a4paper,landscape, right=2.5mm, left=2.5mm, top=2.5mm, bottom=2.5mm]{geometry}
+\usepackage[
+    % showframe, 
+    nomarginpar, 
+    a4paper,
+    landscape, 
+    right=0.25cm, 
+    left=0.25cm, 
+    top=1cm, 
+    bottom=0.65cm,
+    headsep=0.1cm,
+    headheight=0.75cm,
+    footskip=0.35cm,
+]{geometry}
+
+
+\usepackage{fancyhdr}
 
 
 % --- TColorbox ---------------------------------------------------------------
 \usepackage{tcolorbox}
 \tcbuselibrary{skins,raster,listings,breakable,minted, poster}
 
+% https://tex.stackexchange.com/questions/343494/minted-red-box-around-greek-characters/343506#343506
+% \makeatletter
+% \AtBeginEnvironment{minted}{\dontdofcolorbox}
+% \def\dontdofcolorbox{\renewcommand\fcolorbox[4][]{##4}}
+% \makeatother
 
 % --- Tables -------------------------------------------------------------------
 \usepackage{tabularray}
@@ -83,17 +122,36 @@
   linktocpage=false,
   linkbordercolor=white]{hyperref}
 
+% --- Math Environments --------------------------------------------------------
+\usepackage{amsmath}
+\usepackage{nicematrix}
+\NiceMatrixOptions{cell-space-limits = 1pt}
+
+% --- Bibliography -------------------------------------------------------------
+\usepackage[autostyle=true]{csquotes} % recommended before biblatex
+\usepackage[backend=biber,style=numeric,sorting=nyt]{biblatex}
+\addbibresource{../bibliography/references.bib}
+
+\renewcommand{\bibfont}{\normalfont\footnotesize}
+
 % --- Helpers -----------------------------------------------------------------
 \usepackage{lipsum}
 \usepackage{enumitem}
 
+
+
 % --- Default options ---------------------------------------------------------
-\pagestyle{empty}
+\pagestyle{fancy}
+% \pagestyle{empty}
 % \setlength\parindent{0pt}
 % \setlength{\tabcolsep}{2pt}
 % \baselineskip=0pt
 % \setlength\columnsep{1.75mm}
 % \setlength{\parskip}{0.1\baselineskip}
+
+
+\newcommand{\maincolor}{OliveGreen!80!White}
+\newcommand{\maincolspan}{4}
 
 
 
@@ -142,6 +200,28 @@
 % --- TColorbox Skins ----------------------------------------------------------
 
 % Colorbox skin for bash listings
+\tcbsubskin{mintedtext}{empty}{
+        size=minimal,
+        listing engine=minted,
+        listing only,
+        minted style=friendly,
+        minted language=text,
+        minted options={
+            fontsize=\footnotesize,
+            breaklines,
+            autogobble,
+            escapeinside=||,
+        },
+        colback=gray!10!white,
+        colframe=gray!10!white,
+        listing only,
+        left=0em,
+        enhanced,
+}
+
+
+
+% Colorbox skin for bash listings
 \tcbsubskin{mintedbash}{empty}{
         size=minimal,
         listing engine=minted,
@@ -171,6 +251,7 @@
             fontsize=\footnotesize,
             breaklines,
             autogobble,
+            escapeinside=||,
         },
         colback=gray!10!white,
         colframe=gray!10!white,
@@ -202,7 +283,7 @@
     bottomtitle=0mm,
     fontupper=\sffamily\small,
     fontlower=\sffamily\small,
-    halign=left,
+    % halign=left,
     subtitle style={top=0.4mm, bottom=0mm, boxrule=0.2pt, boxsep=0.1mm,
         colback=orange!50!orange!20!white,
         colupper=orange!50!gray,
@@ -224,6 +305,19 @@
 }
 
 
+% ----------------------------------------------------------------------------------------------------------------------
+% Header and Footer Settings
+% ----------------------------------------------------------------------------------------------------------------------
+
+\fancyhead[L]{
+    \LARGE\raisebox{-0.1\height}{\includesvg[height=0.8\baselineskip]{logos/rust-logo-blk}}~{\rustfont RUST} \textcolor{orange}{for beginners}
+}
+\fancyhead[C]{}
+\fancyhead[R]{}
+\fancyfoot[L]{}
+\fancyfoot[C]{}
+\fancyfoot[R]{\thepage}
+
 
     
 % ----------------------------------------------------------------------------------------------------------------------
@@ -235,7 +329,7 @@
 
 % === Page 1 =================================================================
 \include{overview}
-\pagebreak
+% \pagebreak
 
 % === Page 2 =================================================================
 

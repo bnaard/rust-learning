@@ -5,15 +5,15 @@
     ]
 
     % === Header ================================================================
-    \begin{posterboxenv}[skin=headerboxskin]
-        {name=headertitle, span=3, below=top}
-        \LARGE\raisebox{-0.1\height}{\includesvg[height=0.8\baselineskip]{logos/rust-logo-blk}}~{\rustfont RUST} \textcolor{orange}{for beginners}
-    \end{posterboxenv}
+    % \begin{posterboxenv}[skin=headerboxskin]
+    %     {name=headertitle, span=3, below=top}
+    %     \LARGE\raisebox{-0.1\height}{\includesvg[height=0.8\baselineskip]{logos/rust-logo-blk}}~{\rustfont RUST} \textcolor{orange}{for beginners}
+    % \end{posterboxenv}
 
 
     % === Overview ================================================================
     \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Overview]
-        {name=overview,column=1,below=headertitle, span=3}
+        {name=overview,column=1,below=top, span=3}
         Rust is a general-purpose programming language focused on performance, memory safety without garbage collector, and concurrency, using an ownership system preventing memory errors.
 
         \tcbsubtitle{\href{https://cheats.rs/\#hello-rust}{Strengths}}
@@ -26,7 +26,7 @@
 
         \tcbsubtitle{\href{https://rustup.rs/}{Installation}}
         \begin{tcblisting}{skin=mintedbash}
-            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+            $ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
         \end{tcblisting}
 
     \end{posterboxenv}
@@ -131,7 +131,7 @@
 
     % === Supported platforms ================================================================
     \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Supported Platforms]
-        {name=supportedplatforms,column=4,below=headertitle, span=4}
+        {name=supportedplatforms,column=7,below=top, span=4}
 
         % --- Tier 1 ----------------------------------------------------------------
         \tcbsubtitle{\href{https://doc.rust-lang.org/nightly/rustc/platform-support.html}{Tier 1}\hfill \normalfont{\textit{ \tiny official Rust project support with full testing, full std-lib}}}
@@ -176,7 +176,7 @@
 
     % === Primitive Data Types ================================================================
     \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Primitive Data Types]
-        {name=primitives,column=4,below=supportedplatforms, span=4}
+        {name=primitives,column=7,below=supportedplatforms, span=4}
 
         \tcbsubtitle{\href{https://cheats.rs/\#memory-layout}{Boolean and Fixed Point Numeric Types}}
         \begin{tcolorbox}
@@ -230,6 +230,7 @@
         \end{tcolorbox}
 
 
+
         % --- Character/String Types ------------------------------------------------------
         \tcbsubtitle{\href{https://cheats.rs/\#memory-layout}{Character/String Types}}
         \begin{tcolorbox}
@@ -270,19 +271,158 @@
 
 
     \end{posterboxenv}
+            % |$\bm{4.54250574e-01}$|
+
+    % === Tooling cookbook ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Tooling Cookbook]
+        {name=flowcontrol,column=4,below=top, span=3}
+
+        \tcbsubtitle{Cargo}
+
+        Create new project in current directory:
+
+        \begin{tcblisting}{skin=mintedbash}
+            $ cargo new my_project
+                  Created binary (application) `my_project` package
+            $ tree -al my_project # display project structure
+            my_project
+            ├── Cargo.toml        # manifest file for Rust's package manager
+            └── src               # source code directory
+                 └── main.rs      # main source file
+        \end{tcblisting}
+
+        \tcbsubtitle{tbd}
+
+
+    \end{posterboxenv}
+
+    % === Comments ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title={\href{https://doc.rust-lang.org/rust-by-example/meta/doc.html}{Comments and Documentation}}]
+        {name=comments,column=11,below=top, span=2}
+        
+        Comments are parsed in markdown.%
+        % \vspace{-2pt}
+        \begin{tcblisting}{skin=mintedrust}
+            // Line comments **bold** 
+            /* ... Block comments */
+        \end{tcblisting}
+        \textit{Outer Documentation Comments:} Document following item (eg. function).
+        \begin{tcblisting}{skin=mintedrust}
+            /// Outer doc line comments
+            /** ... Outer doc block comment */  
+        \end{tcblisting}
+        \textit{Inner Documentation Comments:} Document the enclosing item (eg. module).
+        \begin{tcblisting}{skin=mintedrust}
+            //! Inner doc line comments
+            /*! ... Inner doc block comment */
+        \end{tcblisting}
+        \textit{Example code} in docs is tested with \texttt{cargo test} (only for library crates)
+        \begin{tcblisting}{skin=mintedrust}
+            /// ```rust
+            /// fn foo() -> i32 { 
+            ///     1 + 1   // in-example comment
+            /// }
+            /// ``` 
+        \end{tcblisting}
+
+    \end{posterboxenv}
+
+
+
+
+\end{tcbposter}
+
+
+\pagebreak
+
+\begin{tcbposter}[
+        poster = {spacing=0.6em, columns=12},
+        boxes = {},
+        coverage={left=0pt, right=0pt, top=0pt, bottom=0pt},
+    ]
+
+
+
+    % === Operators ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Operators]
+        {name=operators,column=8,below=top, span=2}
+
+        \tcbsubtitle{{Arithmetic}}
+        \begin{tcblisting}{skin=mintedrust}
+            let (x, y) = (2, 3);
+            let sum: i16 = x + y; // => 5
+            let subtraction: i16 = x - y; // => -1
+            let multiplication: i16 = x * y; // => 6
+            let division: i16 = x / y; // => 0
+            let modulus: i16 = x % y; // => 2
+        \end{tcblisting}
+
+        \tcbsubtitle{{Bitwise}}
+        \begin{tcblisting}{skin=mintedrust}
+            let (a, b) = (0x4, 0xF); // 0b0100, 0b1111
+            let bitwise_and = a & b; // => 4 (0b0100)
+            let bitwise_or = a | b; // => 15 (0b1111)
+            let bitwise_xor = a ^ b; // => 11 (0b1011)
+            let right_shift = a >> 2; // => 1 (0b0001)
+            let left_shift = b << 4; // => 0b11110000
+        \end{tcblisting}
+
+        \tcbsubtitle{{Assignment}}
+        \begin{tcblisting}{skin=mintedrust}
+            let (k, l) = (0x1, 0x2);
+            k += l; // k = k + l => 3
+            k -= l; // k = k - l => 1
+            k *= l; // k = k * l => 2
+            k /= l; // k = k / l => 1
+            k %= l; // k = k % l => 1
+            k &= l; // k = k & l => 0
+            k |= l; // k = k | l => 2
+            k ^= l; // k = k ^ l => 0
+            k >>= 1; // k = k >> 1 => 0
+            k <<= 1; // k = k << 1 => 0
+        \end{tcblisting}
+
+        \tcbsubtitle{{Comparison}}
+        \begin{tcblisting}{skin=mintedrust}
+            let (e, f) = (1, 100);
+            let greater = f > e;        // => true
+            let less = f < e;           // => false
+            let greater_equal = f >= e; // => true
+            let less_equal = e <= f;    // => true
+            let equal_to = e == f;      // => false
+            let not_equal_to = e != f;  // => true
+        \end{tcblisting}
+
+        \tcbsubtitle{{Logical}}
+        \begin{tcblisting}{skin=mintedrust}
+            let (c, d) = (true, false);
+            let and = c && d;  // => false
+            let or  = c || d;  // => true
+            let not = !c;      // => false
+        \end{tcblisting}
+   \end{posterboxenv}
 
 
     % === Flow Control ================================================================
     \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Flow Control]
-        {name=flowcontrol,column=10,below=headertitle, span=3}
+        {name=flowcontrol,column=10,below=top, span=3}
 
-        \tcbsubtitle{\href{https://cheats.rs/\#memory-layout}{Flow Control}}
-        \begin{tcolorbox}
-            [
-                skin=cheatboxtablesimple,
-                placeholder,
-            ]
-        \end{tcolorbox}
+        \tcbsubtitle{{\texttt{if ... else if ... else} Expression}}
+        \begin{tcblisting}{skin=mintedrust}
+            let (a, b) = (4, 5);
+            if a < b {
+                println!("a is less than b");
+            } else if a > b {
+                println!("a is greater than b");
+            } else {
+                println!("a is equal to b");
+            }
+        \end{tcblisting}
+
+        \tcbsubtitle{{\texttt{if let ...} Expression}}
+        \begin{tcblisting}{skin=mintedrust}
+        \end{tcblisting}
+
 
     \end{posterboxenv}
 
@@ -305,111 +445,30 @@
     \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Functions]
         {name=functions,column=10,below=printingformatting, span=3}
 
-        \tcbsubtitle{{Functions}}
-        \begin{tcolorbox}
-            [
-                placeholder,
-            ]
-        \end{tcolorbox}
+        \tcbsubtitle{{\texttt{fn} Expression}}
+        \begin{tcblisting}{skin=mintedrust}
+            fn main() {
+                let x = 5;
+                println!("The value of x is: {x}");
+            }
+        \end{tcblisting}
+
+
 
     \end{posterboxenv}
 
-
-    % === Operators ================================================================
-    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Operators]
-        {name=operators,column=8,below=headertitle, span=2}
-
-        \tcbsubtitle{{Arithmetic}}
+    % === Constants ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Constants]
+        {name=constants,column=10,below=functions, span=3}
+        Immutable by default, declared in any scope, must be type-annotated and must be computable at compile time.
         \begin{tcblisting}{skin=mintedrust}
-            let (x, y) = (2, 3);
-            let sum: i16 = x + y; // => 5
-            let subtraction: i16 = x - y; // => -1
-            let multiplication: i16 = x * y; // => 6
-            let division: i16 = x / y; // => 0
-            let modulus: i16 = x % y; // => 2
-        \end{tcblisting}
-
-        \tcbsubtitle{{Bitwise}}
-        \begin{tcblisting}{skin=mintedrust}
-            let (a, b) = (0x4, 0xF); // 0b0100, 0b1111
-            let bitwise_and = a & b; // => 4 (0b0100)
-            let bitwise_or = a | b; // => 15 (0b1111)
-            let bitwise_xor = a ^ b; // => 11 (0b1011)
-            let right_shift = a >> 2; // => 1 (0b0001)
-            let left_shift = b << 4; // => 240 (0b11110000)
-        \end{tcblisting}
-
-        \tcbsubtitle{{Assignment}}
-        \begin{tcblisting}{skin=mintedrust}
-            let (k, l) = (0x1, 0x2);
-            k += l; // k = k + l => 3
-            k -= l; // k = k - l => 1
-            k *= l; // k = k * l => 2
-            k /= l; // k = k / l => 1
-            k %= l; // k = k % l => 1
-            k &= l; // k = k & l => 0
-            k |= l; // k = k | l => 2
-            k ^= l; // k = k ^ l => 0
-            k >>= 1; // k = k >> 1 => 0
-            k <<= 1; // k = k << 1 => 0
-        \end{tcblisting}
-
-        \tcbsubtitle{{Comparison}}
-        \begin{tcblisting}{skin=mintedrust}
-            let (e, f) = (1, 100);
-
-            let greater = f > e;        // => true
-            let less = f < e;           // => false
-            let greater_equal = f >= e; // => true
-            let less_equal = e <= f;    // => true
-            let equal_to = e == f;      // => false
-            let not_equal_to = e != f;  // => true
-        \end{tcblisting}
-
-        \tcbsubtitle{{Logical}}
-        \begin{tcblisting}{skin=mintedrust}
-            let (c, d) = (true, false);
-
-            let and = c && d;  // => false
-            let or  = c || d;  // => true
-            let not = !c;      // => false
+            const THREE_HOURS_IN_SECONDS: u32 = 60 * 60 * 3;
+            let n = THREE_HOURS_IN_SECONDS;
         \end{tcblisting}
 
 
     \end{posterboxenv}
 
-
-
-    % === Comments ================================================================
-    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title={\href{https://doc.rust-lang.org/rust-by-example/meta/doc.html}{Documentation}}]
-        {name=comments,column=8,below=operators, span=2}
-        
-        Comments are parsed in markdown.%
-        % \vspace{-2pt}
-        \begin{tcblisting}{skin=mintedrust}
-            // Line comments **bold** 
-            /* ... Block comments */
-        \end{tcblisting}
-        \textit{Outer Documentation Comments:} Document following item (eg. function).
-        \begin{tcblisting}{skin=mintedrust}
-            /// Outer doc line comments
-            /** ... Outer doc block comment */  
-        \end{tcblisting}
-        \textit{Inner Documentation Comments:} Document the enclosing item (eg. module).
-        \begin{tcblisting}{skin=mintedrust}
-            //! Inner doc line comments
-            /*! ... Inner doc block comment */
-        \end{tcblisting}
-        \textit{Example code} in docs is tested with `cargo test` (only for library crates)
-        \begin{tcblisting}{skin=mintedrust}
-            /// ```rust
-            /// fn foo() -> i32 { 
-            ///     1 + 1   // in-example comment
-            /// }
-            /// ``` 
-        \end{tcblisting}
-
-    \end{posterboxenv}
 
 
 \end{tcbposter}
