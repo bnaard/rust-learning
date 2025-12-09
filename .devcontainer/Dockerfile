@@ -6,6 +6,7 @@ RUN apt-get update && \
     git \
     inkscape \
     tree \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 # install Rust and some useful components

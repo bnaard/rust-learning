@@ -4,7 +4,8 @@
         "vscode": {
             "extensions": [
                 "james-yu.latex-workshop",
-                "mblode.zotero"
+                "mblode.zotero",
+                "rust-lang.rust-analyzer"
             ],
             "settings": {
                 "latex-workshop.latex.outDir": "./out",

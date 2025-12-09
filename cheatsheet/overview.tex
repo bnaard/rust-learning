@@ -29,12 +29,34 @@
             $ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
         \end{tcblisting}
 
+        \tcbsubtitle{Relevant Websites}
+        {
+            \begin{tcolorbox}
+                [
+                    skin=cheatboxtablesimple,
+                    tabularray={
+                            columns={halign=l, valign=m},
+                            column{1}={11em, colsep=0pt},
+                            column{2}={15.2em, leftsep=1em, rightsep=0pt},
+                            rows={rowsep=0pt},
+                        }
+                ]
+                \href{https://doc.rust-lang.org/book/}{The Rust Programming Language}               & The official Rust book                             \\
+                \href{https://doc.rust-lang.org/stable/rust-by-example/}{Rust by Example}           & Collection of runnable examples                                 \\
+                \href{https://docs.rs/}{Docs.rs}               & Documentation for Rust crates                                 \\
+                \href{https://crates.io/}{Crates.io}               & The Rust package registry                                 \\
+                \href{https://cheats.rs/}{Cheats.rs}               & Comprehensive Rust cheatsheet                                 \\
+                \href{https://doc.rust-lang.org/error-index.html}{Rust error index}               & Explanation of Rust compiler errors                                 \\
+
+            \end{tcolorbox}
+        }
+
     \end{posterboxenv}
 
 
     % === Tooling ================================================================
     \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Tooling]
-        {name=tooling,column=1,below=overview, span=3}
+        {name=tooling,column=4,below=top, span=3}
 
         % --- Rustup ----------------------------------------------------------------
         \tcbsubtitle{\href{https://rust-lang.github.io/rustup/}{Rustup} \hfill \normalfont{\textit{ \tiny extract from full command list}}}
@@ -107,11 +129,13 @@
                             rows={rowsep=0pt},
                         }
                 ]
-                \texttt{cargo init}                & Create a new binary project                                   \\
-                \texttt{cargo init --lib}          & Create a new library project                                  \\
+                \texttt{cargo new PROJECT\_NAME}      & Create a new binary project \texttt{PROJECT\_NAME} with new directory                    \\
+                \texttt{cargo init}                & Create a new binary project in current dir                                   \\
+                \texttt{cargo init --lib}          & Create a new library project in current dir                    \\
                 \texttt{cargo check}               & Check code for errors                                         \\
                 \texttt{cargo clippy}              & Lint code                                                     \\
                 \texttt{cargo doc}                 & Generate project documentation                                        \\
+                \texttt{cargo fmt}                 & Format code in all files of the current directory                                        \\
                 \texttt{cargo run}                 & Run the project                                               \\
                 \texttt{cargo run --bin NAME}      & Run a specific project binary                                 \\
                 \texttt{cargo build}               & Build everything in debug mode                                \\
@@ -122,7 +146,8 @@
                 \texttt{cargo test}                & Run all tests                                                 \\
                 \texttt{cargo test TEST\_NAME}     & Run a specific test \texttt{TEST\_NAME}                                          \\
                 \texttt{cargo test --doc}          & Run doctests only                                             \\
-                \texttt{cargo bench}               & Run benchmarks
+                \texttt{cargo bench}               & Run benchmarks                                             \\  
+                \texttt{cargo clean}               & Clean the project build artifacts                                   \\
             \end{tcolorbox}
         }
 
@@ -275,21 +300,29 @@
 
     % === Tooling cookbook ================================================================
     \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Tooling Cookbook]
-        {name=flowcontrol,column=4,below=top, span=3}
+        {name=flowcontrol,column=1,below=overview, span=3}
 
         \tcbsubtitle{Cargo}
 
         Create new project in current directory:
-
         \begin{tcblisting}{skin=mintedbash}
             $ cargo new my_project
                   Created binary (application) `my_project` package
             $ tree -al my_project # display project structure
             my_project
+            ├── .git              # Git repository directory
+                 └── ...          # Git repo substructure
+            ├── .gitignore        # specifies intentionally untracked files
             ├── Cargo.toml        # manifest file for Rust's package manager
             └── src               # source code directory
                  └── main.rs      # main source file
         \end{tcblisting}
+
+        Create new library in current directory without version control:
+        \begin{tcblisting}{skin=mintedbash}
+            $ cargo new my_library --lib --vcs none
+        \end{tcblisting}
+
 
         \tcbsubtitle{tbd}
 
@@ -340,6 +373,36 @@
         boxes = {},
         coverage={left=0pt, right=0pt, top=0pt, bottom=0pt},
     ]
+
+    % === Variables ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Flow Control]
+        {name=flowcontrol,column=1,below=top, span=3}
+
+        \tcbsubtitle{Variables}
+        \begin{tcblisting}{skin=mintedrust}
+            let x: i32 = 22;       // immutable variable (default)
+            let mut y: f64 = 3.14; // mutable variable
+            x = 42;                // error: cannot assign twice to immutable variable
+            y = 2.71;              // ok: y is mutable
+            _unused_variable = 5;  // start with underscore to suppress warnings
+        \end{tcblisting}
+
+        \tcbsubtitle{Constants}
+        \begin{tcblisting}{skin=mintedrust}
+            const MAX_POINTS: u32 = 100; // constant
+        \end{tcblisting}
+
+        \tcbsubtitle{Number Formats}
+        \begin{tcblisting}{skin=mintedrust}
+            let decimal = 98_222;     // decimal (with underscores at thousands)
+            let hex = 0xff_ad;        // hexadecimal (with underscores at bytes)
+            let octal = 0o77;         // octal
+            let binary = 0b1111_0000; // binary (with underscores at nibbles)
+            let byte = b'A';          // byte (u8 only)
+        \end{tcblisting}
+
+
+    \end{posterboxenv}
 
 
 
