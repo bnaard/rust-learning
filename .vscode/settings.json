@@ -1,4 +1,9 @@
 {
+    "rust-analyzer.linkedProjects": [
+        "./src/my_project/Cargo.toml",
+        "./src/varmut/Cargo.toml",
+        "./src/project_01/Cargo.toml",
+    ],
     "latex-workshop.latex.outDir": "./out/",
     "latex-workshop.latex.recipes": [
         {
