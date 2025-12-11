@@ -361,6 +361,19 @@
     \end{posterboxenv}
 
 
+    % === Type Alias ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Type Aliases]
+        {name=typealiases,column=11,below=comments, span=2}
+        
+        Create a new name for an existing type
+        \begin{tcblisting}{skin=mintedrust}
+            type Kilometers = i32; // type alias
+            let x: i32 = 5;
+            let y: Kilometers = 10;
+            let sum: i32 = x + y;  // ok: both are i32 under the hood
+        \end{tcblisting}
+
+    \end{posterboxenv}
 
 
 \end{tcbposter}
@@ -375,21 +388,56 @@
     ]
 
     % === Variables ================================================================
-    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Flow Control]
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Variables and Constants]
         {name=flowcontrol,column=1,below=top, span=3}
 
+
+
         \tcbsubtitle{Variables}
+        \textbf{Declaration} \textcolor{gray}{(how variables are declared and initialized)}
+        \begin{tcblisting}{skin=mintedrust}
+            let x: i32 = 22;       // immutable variable (default) 
+        \end{tcblisting}
+        \textbf{Mutability} \textcolor{gray}{(when variables can be changed)}
         \begin{tcblisting}{skin=mintedrust}
             let x: i32 = 22;       // immutable variable (default)
             let mut y: f64 = 3.14; // mutable variable
-            x = 42;                // error: cannot assign twice to immutable variable
+            x = 42;                // error: cannot assign to immutable var
             y = 2.71;              // ok: y is mutable
-            _unused_variable = 5;  // start with underscore to suppress warnings
+        \end{tcblisting}
+
+        \textbf{Shadowing} \textcolor{gray}{(re-declare variable with same name in same scope)}
+        \begin{tcblisting}{skin=mintedrust}
+            let shadowed : i32 = 42;    // first declaration
+            let shadowed : &str = "Hi"; // var's are shadowed in same scope
+        \end{tcblisting}
+
+        \textbf{Unused} \textcolor{gray}{(compiler warnings can be suppressed)}
+        \begin{tcblisting}{skin=mintedrust}
+            let warn : i32 = 42;    // compiler warns "unused variable"
+            let _nowarn : i32 = 84; // leading underscore suppresses warning
+        \end{tcblisting}
+
+        \tcbsubtitle{Scope}
+        Boundary in which a name is valid. Established by a block \texttt{\{ ... \}}.
+        \begin{tcblisting}{skin=mintedrust}
+            {
+                let x: i32 = 42;        // x declared from this point forward
+                {                       // scopes can be nested
+                    let x: i32 = 21;    // shadows outer x, 
+                                        // x = 21 from this point forward
+                    println!("x: {x}"); // prints 21
+                }
+                println!("x: {x}");     // prints 42
+            }                           // x goes out of scope here
+            println!("x: {x}");         // error: x not found in this scope
         \end{tcblisting}
 
         \tcbsubtitle{Constants}
+        Can be declared outside functions, are immutable, must be type-annotated and must be computable at compile time.
         \begin{tcblisting}{skin=mintedrust}
-            const MAX_POINTS: u32 = 100; // constant
+            const MAX_POINTS: u32 = 100; // constant declaration
+            let n = MAX_POINTS;          // use constant
         \end{tcblisting}
 
         \tcbsubtitle{Number Formats}
@@ -520,13 +568,33 @@
 
     \end{posterboxenv}
 
-    % === Constants ================================================================
-    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Constants]
-        {name=constants,column=10,below=functions, span=3}
-        Immutable by default, declared in any scope, must be type-annotated and must be computable at compile time.
+
+    % === Compiler Directives ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Compiler Directives]
+        {name=compilerdirectives,column=10,below=functions, span=3}
+
+        \tcbsubtitle{Usage}
         \begin{tcblisting}{skin=mintedrust}
-            const THREE_HOURS_IN_SECONDS: u32 = 60 * 60 * 3;
-            let n = THREE_HOURS_IN_SECONDS;
+            #![warn(unused_variables)]    // warning enabled in this file
+            #[allow(unused_variables)]    // allowed in the next item or block
+            fn main() {
+                #[warn(unused_variables)] // warned on in the next line
+                let unused_var = 42;      // warning: unused variable
+            }
+        \end{tcblisting}
+
+        \tcbsubtitle{Most relevant directives}
+        \begin{tcblisting}{skin=mintedrust}
+            #![allow(<options>)]   // allow <options>
+            #![forbid(<options>)]  // forbid <options>
+            #![warn(<options>)]    // warn on <options>
+        \end{tcblisting}
+
+        \tcbsubtitle{Most relevant directive options}
+        \begin{tcblisting}{skin=mintedrust}
+            dead_code         // unused code
+            unsafe_code       // unsafe code
+            unused_variables  // unused variables
         \end{tcblisting}
 
 
