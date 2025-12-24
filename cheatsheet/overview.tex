@@ -370,8 +370,11 @@
             type Kilometers = i32; // type alias
             let x: i32 = 5;
             let y: Kilometers = 10;
-            let sum: i32 = x + y;  // ok: both are i32 under the hood
+            let sum: i32 = x + y;  // ok: both are i32
         \end{tcblisting}
+
+        \tcbinputlisting{skin=mintedrust, listing file=../src/project_01/src/main.rs, minted options={firstline=1,lastline=7}}
+
 
     \end{posterboxenv}
 
@@ -600,6 +603,23 @@
 
     \end{posterboxenv}
 
+    % === Standard types built in methods ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Standard Types Built-in Methods]
+        {name=standardtypesbuiltinmethods,column=10,below=compilerdirectives, span=3}
+
+    \end{posterboxenv}
+
+    % === String formatting syntax ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=String Formatting Syntax]
+        {name=stringformattingsyntax,column=10,below=standardtypesbuiltinmethods, span=3}
+
+    \end{posterboxenv}
+
+    % === Value Casting ================================================================
+    \begin{posterboxenv}[skin=cheatboxorangeskin, adjusted title=Value Casting]
+        {name=valuecasting,column=10,below=stringformattingsyntax, span=3}
+
+    \end{posterboxenv}
 
 
 \end{tcbposter}
